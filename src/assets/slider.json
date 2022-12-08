@@ -1,0 +1,27 @@
+[
+   {
+    "id": 1,
+    "image": "../assets/image/slide/001_image.jpg",
+    "title": "Serviço de Mecânico" 
+   },
+      {
+    "id": 2,
+    "image": "../assets/image/slide/002_image.jpg",
+    "title": "Serviço de Mecânico" 
+   },
+      {
+    "id": 3,
+    "image": "../assets/image/slide/003_image.jpg",
+    "title": "Serviço de Mecânico" 
+   },
+      {
+    "id": 4,
+    "image": "../assets/image/slide/004_image.jpg",
+    "title": "Serviço de Mecânico" 
+   },
+      {
+    "id": 5,
+    "image": "../assets/image/slide/005_image.jpg",
+    "title": "Serviço de Mecânico" 
+   }
+]
