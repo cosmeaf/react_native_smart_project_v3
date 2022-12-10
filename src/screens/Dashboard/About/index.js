@@ -1,27 +1,13 @@
 import React from 'react';
-import { SafeAreaView, View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-
-const About = () => {
+export default ({ navigation }) => {
   return (
-    <SafeAreaView style={styles.container}>
-      <View>
-        <Text>
-          ABOUT PAGE
-        </Text>
+    <SafeAreaView style={{ flex: 1, marginLeft: 14, marginRight: 14 }}>
+      <View style={{ flex: 1, backgroundColor: '#DAA', justifyContent: 'center', alignItems: 'center' }}>
+        <Text>HEADER</Text>
       </View>
     </SafeAreaView>
   )
 }
-
-export default About;
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  }
-})
-
