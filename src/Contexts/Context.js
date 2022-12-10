@@ -1,26 +1,30 @@
-import React, { createContext, useState, useEffect, useContext } from "react";
+import React, { createContext, useState, useEffect, useReducer } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Api from '../service/Api';
 
 const GlobalContext = createContext({});
 
 export const GlobalProvider = ({ children }) => {
+  const [isLoading, setIsLoading] = useState(true);
   const [authentication, setAuthentication] = useState(false);
   const [accessToken, setAccessToken] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    tokenVerify()
+  }, []);
 
   // Sign-In
   const signin = async (username, password) => {
     let json = await Api.signIn(username, password)
-    // console.log('REFRESH ===========> ' + json.refresh)
-    // console.log('ACCESS ===========> ' + json.access)
+    // console.log('SIGN-IN REFRESH ===========> ' + json.refresh)
+    // console.log('SIGN-IN ACCESS ===========> ' + json.access)
     if (json.access && json.refresh) {
-      setIsLoading(true)
       await AsyncStorage.setItem("accessToken", JSON.stringify(json.access));
       await AsyncStorage.setItem("refreshToken", JSON.stringify(json.refresh));
       setAuthentication(true)
     } else {
-      setAuthentication(false)
+      setIsLoading(false);
+      setAuthentication(false);
     }
     setIsLoading(false)
   }
@@ -40,24 +44,18 @@ export const GlobalProvider = ({ children }) => {
   const signout = () => {
     AsyncStorage.removeItem("accessToken");
     AsyncStorage.clear();
-    setAuthentication(false);
     setIsLoading(false)
+    setAuthentication(false);
   }
 
 
-  /**
-   *  Data Persiste, Validation Token and Refresh new Token
-   * @param {*} token_verify 
-   * @param {*} token_refresh 
-   */
+  // Data Persiste, Validation Token and Refresh new Token 
   const tokenVerify = async (token_verify, token_refresh) => {
-    setIsLoading(true)
     const value = await AsyncStorage.getItem('accessToken');
     const token = JSON.parse(value)
     let verify = await Api.tokenkVerify(token)
     if (Object.keys(verify).length == 0) {
       setAuthentication(true)
-      setIsLoading(false)
     } else {
       const value = await AsyncStorage.getItem('refreshToken');
       const refresh = JSON.parse(value)
@@ -65,22 +63,18 @@ export const GlobalProvider = ({ children }) => {
       // console.log('RENEW REFRESH ===========> ' + json.refresh)
       // console.log('RENEW ACCESS ===========> ' + json.access)
       if (json.access && json.refresh) {
-        setIsLoading(true)
         await AsyncStorage.setItem("accessToken", JSON.stringify(json.access));
         await AsyncStorage.setItem("refreshToken", JSON.stringify(json.refresh));
         setAuthentication(true)
-        setIsLoading(false)
       } else {
         console.log('SIGN-OUT SUCCESSFULY MOBILE')
-        setAuthentication(false)
+        setAuthentication(false);
         setIsLoading(false)
       }
     }
+    setIsLoading(false)
   }
 
-  useEffect(() => {
-    tokenVerify()
-  }, []);
 
   return (
     <GlobalContext.Provider value={{ authentication, isLoading, signin, signup, signout }}>

@@ -8,7 +8,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Icon } from 'react-native-elements';
 
 // https://fonts.google.com/specimen/Nunito+Sans
-import { useFonts } from 'expo-font';
 import GlobalContext from '../../Contexts/Context';
 import { styles } from './styles';
 
