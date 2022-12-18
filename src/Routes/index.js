@@ -9,7 +9,6 @@ import AppTabStack from './TabSatck.route';
 
 const Route = () => {
   const { authentication, isLoading } = useContext(GlobalContext);
-  console.log(authentication, isLoading)
 
   if (isLoading) {
     return (

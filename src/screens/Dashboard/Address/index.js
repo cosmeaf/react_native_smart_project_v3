@@ -1,97 +1,51 @@
 import React from 'react';
+import { ScrollView, View, KeyboardAvoidingView, TextInput, StyleSheet, Text, Platform, TouchableWithoutFeedback, Button, Keyboard, TouchableOpacity } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import {
-  View,
-  KeyboardAvoidingView,
-  ScrollView,
-  TextInput,
-  StyleSheet,
-  Text,
-  Platform,
-  TouchableWithoutFeedback,
-  TouchableOpacity,
-  Keyboard
-} from 'react-native';
-
-
 
 export default ({ navigation }) => {
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <ScrollView>
-            <Text style={{ marginLeft: 14, marginRight: 14, fontSize: 16, marginBottom: 10 }}>Endereço</Text>
-            {/* Cep */}
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#FFF', marginBottom: 10 }}>
-              <Text style={{ marginLeft: 14 }}>
-                Cep:
-              </Text>
-              <TextInput
-                style={{ marginRight: 14 }}
-                placeholder='20710130'
-              />
-            </View>
-            {/* logradouro */}
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#FFF', marginBottom: 10 }}>
-              <Text style={{ marginLeft: 14 }}>
-                Rua / Avenida:
-              </Text>
-              <TextInput
-                style={{ marginRight: 14 }}
-                placeholder='Rua lins de Vasconcelos'
-              />
-            </View>
-            {/* complemento */}
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#FFF', marginBottom: 10 }}>
-              <Text style={{ marginLeft: 14 }}>
-                Complemento:
-              </Text>
-              <TextInput
-                style={{ marginRight: 14 }}
-                placeholder='Numero 542, Apartamento 302'
-              />
-            </View>
-            {/* Bairro */}
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#FFF', marginBottom: 10 }}>
-              <Text style={{ marginLeft: 14 }}>
-                Bairro:
-              </Text>
-              <TextInput
-                style={{ marginRight: 14 }}
-                placeholder='Lins de Vasconcelos'
-              />
-            </View>
-            {/* Localidade */}
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#FFF', marginBottom: 10 }}>
-              <Text style={{ marginLeft: 14 }}>
-                Cidade:
-              </Text>
-              <TextInput
-                style={{ marginRight: 14 }}
-                placeholder='Rio de Janeiro'
-              />
-            </View>
-            {/* Uf */}
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#FFF', marginBottom: 10 }}>
-              <Text style={{ marginLeft: 14 }}>
-                UF:
-              </Text>
-              <TextInput
-                style={{ marginRight: 14 }}
-                placeholder='RJ'
-              />
-            </View>
-          </ScrollView>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
-      <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-        <TouchableOpacity style={{ backgroundColor: '#FFF', justifyContent: 'center', alignItems: 'center', marginBottom: 20, padding: 10 }}>
-          <Text style={{ fontSize: 16, fontWeight: '500', color: 'red' }}>Salvar</Text>
+      {/* System Information */}
+      <View style={{ flex: 1 }}>
+        <Text style={{ marginLeft: 14, marginRight: 14, marginBottom: 20, fontSize: 18, fontWeight: '500' }}>Informações de Endereço</Text>
+        {/* First Name */}
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#FFF', marginBottom: 5 }}>
+          <Text style={{ marginLeft: 14, padding: 10, fontSize: 18, fontWeight: '500' }}>Cep:</Text>
+          <Text style={{ marginRight: 14, padding: 10, fontSize: 16, }}>20710130</Text>
+        </View>
+        {/* Last Name */}
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#FFF', marginBottom: 5 }}>
+          <Text style={{ marginLeft: 14, padding: 10, fontSize: 18, fontWeight: '500' }}>Logradouro:</Text>
+          <Text style={{ marginRight: 14, padding: 10, fontSize: 16 }}>Rua Lins de Vasconcelos</Text>
+        </View>
+        {/* E-mail */}
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#FFF', marginBottom: 5 }}>
+          <Text style={{ marginLeft: 14, padding: 10, fontSize: 18, fontWeight: '500' }}>Complemento:</Text>
+          <Text style={{ marginRight: 14, padding: 10, fontSize: 16, }}>Numero 542, Apt 302</Text>
+        </View>
+        {/* E-mail */}
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#FFF', marginBottom: 5 }}>
+          <Text style={{ marginLeft: 14, padding: 10, fontSize: 18, fontWeight: '500' }}>Bairro:</Text>
+          <Text style={{ marginRight: 14, padding: 10, fontSize: 16, }}>Lins de Vasconcelos</Text>
+        </View>
+        {/* E-mail */}
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#FFF', marginBottom: 5 }}>
+          <Text style={{ marginLeft: 14, padding: 10, fontSize: 18, fontWeight: '500' }}>Localidade:</Text>
+          <Text style={{ marginRight: 14, padding: 10, fontSize: 16, }}>Rio de Janeiro</Text>
+        </View>
+        {/* UF / state */}
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#FFF', marginBottom: 5 }}>
+          <Text style={{ marginLeft: 14, padding: 10, fontSize: 18, fontWeight: '500' }}>Estado:</Text>
+          <Text style={{ marginRight: 14, padding: 10, fontSize: 16, }}>RJ</Text>
+        </View>
+
+      </View>
+      <View style={{ justifyContent: 'center', alignItems: 'center', marginBottom: 10 }}>
+        <TouchableOpacity>
+          <Text style={{ fontSize: 18, fontWeight: '500', color: 'red' }}>Excluir Conta</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
   )
 }
-

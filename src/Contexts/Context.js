@@ -8,9 +8,11 @@ export const GlobalProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [authentication, setAuthentication] = useState(false);
   const [accessToken, setAccessToken] = useState('');
+  const [profile, setProfile] = useState([]);
+  const [user, setUser] = useState([]);
 
   useEffect(() => {
-    tokenVerify()
+    tokenVerify();
   }, []);
 
   // Sign-In
@@ -38,16 +40,13 @@ export const GlobalProvider = ({ children }) => {
     }
   }
 
-  /**
-   * Sign-Out
-   */
+  //Sign-Out
   const signout = () => {
     AsyncStorage.removeItem("accessToken");
     AsyncStorage.clear();
     setIsLoading(false)
     setAuthentication(false);
   }
-
 
   // Data Persiste, Validation Token and Refresh new Token 
   const tokenVerify = async (token_verify, token_refresh) => {
@@ -76,8 +75,10 @@ export const GlobalProvider = ({ children }) => {
   }
 
 
+
+
   return (
-    <GlobalContext.Provider value={{ authentication, isLoading, signin, signup, signout }}>
+    <GlobalContext.Provider value={{ authentication, isLoading, signin, signup, signout, tokenVerify }}>
       {children}
     </GlobalContext.Provider>
   )

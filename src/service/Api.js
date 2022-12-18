@@ -92,6 +92,133 @@ export default {
     }
   },
   //-------------------------------------------------------------------------
+  // API ACCESS USER
+  //-------------------------------------------------------------------------
+  getUser: async () => {
+    const value = await AsyncStorage.getItem('accessToken');
+    const token = JSON.parse(value)
+    try {
+      const response = await fetch(`${BASE_API}/user/`, {
+        method: 'GET',
+        headers: {
+          Accept: "application/json",
+          "Content-type": "application/json;charset=UTF-8",
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      if (response.status === 200) {
+        const json = await response.json();
+        return json;
+      } else {
+        console.log('ERROR API READ_USER' + response.status)
+        return response.status
+      }
+    } catch (error) {
+      return error;
+    }
+  },
+  updateUser: async (id, first_name, last_name) => {
+    const value = await AsyncStorage.getItem('accessToken');
+    const token = JSON.parse(value)
+    try {
+      const response = await fetch(`${BASE_API}/user/${id}/`, {
+        method: 'PATCH',
+        headers: {
+          Accept: "application/json",
+          "Content-type": "application/json;charset=UTF-8",
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ id, first_name, last_name })
+      });
+      if (response.status === 200) {
+        const json = await response.json();
+        return json;
+      } else {
+        console.log('ERROR API PUT_USER ' + response.status)
+        return response.status
+      }
+    } catch (error) {
+      return error;
+    }
+  },
+  deleteUser: async (id) => {
+    const value = await AsyncStorage.getItem('accessToken');
+    const token = JSON.parse(value)
+    try {
+      const response = await fetch(`${BASE_API}/user/${id}/`, {
+        method: 'DELETE',
+        headers: {
+          Accept: "application/json",
+          "Content-type": "application/json;charset=UTF-8",
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ id })
+      });
+      if (response.status === 200) {
+        const json = await response.json();
+        return json;
+      } else {
+        console.log('ERROR API PUT_USER ' + response.status)
+        return response.status
+      }
+    } catch (error) {
+      return error;
+    }
+  },
+
+  //-------------------------------------------------------------------------
+  // API ACCESS PROFILE
+  //-------------------------------------------------------------------------
+  getProfile: async () => {
+    const value = await AsyncStorage.getItem('accessToken');
+    const token = JSON.parse(value)
+    try {
+      const response = await fetch(`${BASE_API}/profile/`, {
+        method: 'GET',
+        headers: {
+          Accept: "application/json",
+          "Content-type": "application/json;charset=UTF-8",
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      if (response.status === 200) {
+        const json = await response.json();
+        return json;
+      } else {
+        console.log('ERROR API READ_PROFILE ' + response.status)
+        return response.status
+      }
+    } catch (error) {
+      return error;
+    }
+  },
+  updateProfile: async (id, birthday, phone_number) => {
+    console.log(`UPDATE PROFILE = ${id}, ${birthday}, ${phone_number}`)
+
+    const value = await AsyncStorage.getItem('accessToken');
+    const token = JSON.parse(value)
+    try {
+      const response = await fetch(`${BASE_API}/profile/${id}/`, {
+        method: 'PATCH',
+        headers: {
+          Accept: "application/json",
+          "Content-type": "application/json;charset=UTF-8",
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ id, birthday, phone_number })
+      });
+      if (response.status === 200) {
+        const json = await response.json();
+        return json;
+      } else {
+        console.log('ERROR API PUT_USER ' + response.status)
+        return response.status
+      }
+    } catch (error) {
+      return error;
+    }
+  },
+  //-------------------------------------------------------------------------
   // API GET SERVICES
   //-------------------------------------------------------------------------
   getServices: async () => {
@@ -117,31 +244,4 @@ export default {
       return error;
     }
   },
-  //-------------------------------------------------------------------------
-  // API ACCESS PROFILE
-  //-------------------------------------------------------------------------
-  getProfile: async () => {
-    const value = await AsyncStorage.getItem('accessToken');
-    const token = JSON.parse(value)
-    try {
-      const response = await fetch(`${BASE_API}/profile/`, {
-        method: 'GET',
-        headers: {
-          Accept: "application/json",
-          "Content-type": "application/json;charset=UTF-8",
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-      if (response.status === 200) {
-        const json = await response.json();
-        return json;
-      } else {
-        console.log('ERROR FROM API ' + response.status)
-        return response
-      }
-    } catch (error) {
-      return error;
-    }
-  },
-
 };

@@ -1,89 +1,58 @@
-import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, Dimensions, FlatList, Animated } from 'react-native'
-import CarouselItem from './CarouselItem'
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { SliderBox } from "react-native-image-slider-box";
 
 
-const { width, heigth } = Dimensions.get('window')
-let flatList
 
-function infiniteScroll(dataList) {
-  const numberOfData = dataList.length
-  let scrollValue = 0, scrolled = 0
+const Carousel = () => {
+  const images = [
+    require('../assets/image/slide/001_image.jpg'),
+    require('../assets/image/slide/002_image.jpg'),
+    require('../assets/image/slide/003_image.jpg'),
+    require('../assets/image/slide/004_image.jpg'),
+    require('../assets/image/slide/005_image.jpg'),
+    require('../assets/image/slide/006_image.jpg'),
+    require('../assets/image/slide/007_image.jpg'),
+  ];
 
-  setInterval(function () {
-    scrolled++
-    if (scrolled < numberOfData)
-      scrollValue = scrollValue + width
-
-    else {
-      scrollValue = 0
-      scrolled = 0
-    }
-
-    this.flatList.scrollToOffset({ animated: true, offset: scrollValue })
-
-  }, 3000)
+  return (
+    <View>
+      <SliderBox
+        images={images}
+        sliderBoxHeight={200}
+        onCurrentImagePressed={index => index}
+        dotColor="#DD1"
+        inactiveDotColor="#F1F1F1"
+        paginationBoxVerticalPadding={20}
+        autoplay
+        circleLoop
+        resizeMethod={'resize'}
+        resizeMode={'cover'}
+        paginationBoxStyle={{
+          position: "absolute",
+          bottom: 0,
+          padding: 0,
+          alignItems: "center",
+          alignSelf: "center",
+          justifyContent: "center",
+          paddingVertical: 10
+        }}
+        dotStyle={{
+          width: 10,
+          height: 10,
+          borderRadius: 5,
+          marginHorizontal: 0,
+          padding: 0,
+          margin: 0,
+          backgroundColor: "rgba(128, 128, 128, 0.92)"
+        }}
+        ImageComponentStyle={{ borderRadius: 15, width: '92%', marginTop: 5 }}
+        imageLoadingColor="#F1F1F1"
+      />
+    </View>
+  )
 }
-
-
-const Carousel = ({ data }) => {
-  const scrollX = new Animated.Value(0)
-  let position = Animated.divide(scrollX, width)
-  const [dataList, setDataList] = useState(data)
-
-  useEffect(() => {
-    setDataList(data)
-    infiniteScroll(dataList)
-  })
-
-
-  if (data && data.length) {
-    return (
-      <View>
-        <FlatList data={data}
-          ref={(flatList) => { this.flatList = flatList }}
-          keyExtractor={(item, index) => 'key' + index}
-          horizontal
-          pagingEnabled
-          scrollEnabled
-          snapToAlignment="center"
-          scrollEventThrottle={16}
-          decelerationRate={"fast"}
-          showsHorizontalScrollIndicator={false}
-          renderItem={({ item }) => {
-            return <CarouselItem item={item} />
-          }}
-          onScroll={Animated.event(
-            [{ nativeEvent: { contentOffset: { x: scrollX } } }]
-          )}
-        />
-
-        <View style={styles.dotView}>
-          {data.map((_, i) => {
-            let opacity = position.interpolate({
-              inputRange: [i - 1, i, i + 1],
-              outputRange: [0.3, 1, 0.3],
-              extrapolate: 'clamp'
-            })
-            return (
-              <Animated.View
-                key={i}
-                style={{ opacity, height: 10, width: 10, backgroundColor: '#595959', margin: 8, borderRadius: 5 }}
-              />
-            )
-          })}
-
-        </View>
-      </View>
-    )
-  }
-
-  console.log('Please provide Images')
-  return null
-}
-
-const styles = StyleSheet.create({
-  dotView: { flexDirection: 'row', justifyContent: 'center' }
-})
 
 export default Carousel
+
+const styles = StyleSheet.create({})
