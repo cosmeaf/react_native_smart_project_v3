@@ -219,6 +219,98 @@ export default {
     }
   },
   //-------------------------------------------------------------------------
+  // API ADDRESS
+  //-------------------------------------------------------------------------
+  getCep: async (cep) => {
+    try {
+      let response = await fetch(`https://viacep.com.br/ws/${cep}/json/`, {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'default'
+      });
+      if (response.status === 200) {
+        let json = await response.json();
+        return json;
+      } else {
+        console.log('ERROR API VIACEP ' + response.status)
+        return response.status
+      }
+    } catch (error) {
+      return error
+    }
+  },
+  getAddress: async () => {
+    const value = await AsyncStorage.getItem('accessToken');
+    const token = JSON.parse(value)
+    try {
+      const response = await fetch(`${BASE_API}/address/`, {
+        method: 'GET',
+        headers: {
+          Accept: "application/json",
+          "Content-type": "application/json;charset=UTF-8",
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      if (response.status === 200) {
+        const json = await response.json();
+        return json;
+      } else {
+        console.log('ERROR API READ_ADDRESS ' + response.status)
+        return response.status
+      }
+    } catch (error) {
+      return error;
+    }
+  },
+  createAddress: async (cep, logradouro, complemento, bairro, localidade, uf) => {
+    console.log('CREATE ADDRESS API ' + cep, logradouro, complemento, bairro, localidade, uf)
+    const value = await AsyncStorage.getItem('accessToken');
+    const token = JSON.parse(value)
+    try {
+      const response = await fetch(`${BASE_API}/address/`, {
+        method: 'POST',
+        headers: {
+          Accept: "application/json",
+          "Content-type": "application/json;charset=UTF-8",
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ cep, logradouro, complemento, bairro, localidade, uf })
+      });
+      if (response.status === 201) {
+        const json = await response.json();
+        return json;
+      } else {
+        throw new Error(`${response.status}`);
+      }
+    } catch (error) {
+      return error;
+    }
+  },
+  deleteAddress: async (id) => {
+    const value = await AsyncStorage.getItem('accessToken');
+    const token = JSON.parse(value)
+    try {
+      const response = await fetch(`${BASE_API}/address/${id}/`, {
+        method: 'DELETE',
+        headers: {
+          Accept: "application/json",
+          "Content-type": "application/json;charset=UTF-8",
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ id })
+      });
+      if (response.status === 200) {
+        const json = await response.json();
+        return json;
+      } else {
+        console.log('ERROR API DELETE_ADDRESS ' + response.status)
+        return response.status
+      }
+    } catch (error) {
+      return error;
+    }
+  },
+  //-------------------------------------------------------------------------
   // API GET SERVICES
   //-------------------------------------------------------------------------
   getServices: async () => {
