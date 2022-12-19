@@ -1,52 +1,53 @@
 import React from 'react';
-import { ScrollView, View, KeyboardAvoidingView, TextInput, StyleSheet, Text, Platform, TouchableWithoutFeedback, Button, Keyboard, TouchableOpacity } from 'react-native';
+import { ScrollView, View, Text, TouchableOpacity, Alert } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import TabOneLine from '../../../componentes/TabOneLine';
+import Api from '../../../service/Api';
 
-export default ({ navigation }) => {
+export default ({ navigation, route }) => {
+  console.log(route.params)
+
+  const deleteVehicle = (id) => {
+    if (id) {
+      Alert.alert('Excluir Veículo', 'Tem certeza que deseja excluir Veículo do sistema?', [
+        {
+          text: "Sim",
+          onPress: () => {
+            console.log(id)
+            Api.deleteVehicle(id);
+            navigation.navigate('Profile');
+          }
+        },
+        {
+          text: "Não",
+        }
+      ])
+    } else {
+      Alert.alert('Atenção', 'Desculpe, não há veículo registrado para ser excluido!');
+    }
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ flex: 1 }}>
+      <ScrollView>
         <Text style={{ marginLeft: 14, marginRight: 14, marginBottom: 20, fontSize: 16, fontWeight: '500' }}>Dados do Veículo</Text>
         {/* Brand */}
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#FFF', marginBottom: 5 }}>
-          <Text style={{ marginLeft: 14, padding: 10, fontSize: 18, fontWeight: '500' }}>Marca:</Text>
-          <Text style={{ marginRight: 14, padding: 10, fontSize: 16, }}>Honda</Text>
-        </View>
+        <TabOneLine title='Marca:' subTitle={route.params.brand} />
         {/* Model */}
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#FFF', marginBottom: 5 }}>
-          <Text style={{ marginLeft: 14, padding: 10, fontSize: 18, fontWeight: '500' }}>Modelo:</Text>
-          <Text style={{ marginRight: 14, padding: 10, fontSize: 16, }}>Civic LXS 1.8 16V 4P Mec</Text>
-        </View>
+        <TabOneLine title='Modelo:' subTitle={route.params.model} />
         {/* Fuel */}
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#FFF', marginBottom: 5 }}>
-          <Text style={{ marginLeft: 14, padding: 10, fontSize: 18, fontWeight: '500' }}>Combustível:</Text>
-          <Text style={{ marginRight: 14, padding: 10, fontSize: 16, }}>Gasolina</Text>
-        </View>
+        <TabOneLine title='Combustível:' subTitle={route.params.fuell} />
         {/* Years */}
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#FFF', marginBottom: 5 }}>
-          <Text style={{ marginLeft: 14, padding: 10, fontSize: 18, fontWeight: '500' }}>Ano Fabricação:</Text>
-          <Text style={{ marginRight: 14, padding: 10, fontSize: 16, }}>2014</Text>
-        </View>
+        <TabOneLine title='Ano:' subTitle={route.params.year} />
         {/* Plate Id */}
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#FFF', marginBottom: 5 }}>
-          <Text style={{ marginLeft: 14, padding: 10, fontSize: 18, fontWeight: '500' }}>Placa:</Text>
-          <Text style={{ marginRight: 14, padding: 10, fontSize: 16, }}>LQV1965</Text>
-        </View>
+        <TabOneLine title='Placa:' subTitle={route.params.plate} />
         {/* Odomiter */}
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#FFF', marginBottom: 5 }}>
-          <Text style={{ marginLeft: 14, padding: 10, fontSize: 18, fontWeight: '500' }}>Hodomêtro / KM:</Text>
-          <Text style={{ marginRight: 14, padding: 10, fontSize: 16, }}>1304291</Text>
-        </View>
-        {/* Table Price */}
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#FFF', marginBottom: 5 }}>
-          <Text style={{ marginLeft: 14, padding: 10, fontSize: 18, fontWeight: '500' }}>Tabela Fipe:</Text>
-          <Text style={{ marginRight: 14, padding: 10, fontSize: 16, }}>R$ 30.213.19</Text>
-        </View>
-      </View>
-      <View style={{ justifyContent: 'center', alignItems: 'center', marginBottom: 10 }}>
-        <TouchableOpacity>
-          <Text style={{ fontSize: 18, fontWeight: '500', color: 'red' }}>Ecluir Veículo</Text>
+        <TabOneLine title='Kilometragem:' subTitle={route.params.odomitter} />
+      </ScrollView>
+      <View style={{ justifyContent: 'center', alignItems: 'center', marginBottom: 20 }}>
+        <TouchableOpacity onPress={() => deleteVehicle(route.params.id)}>
+          <Text style={{ fontSize: 18, fontWeight: '500', color: 'red' }}>Excluir Veículo</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

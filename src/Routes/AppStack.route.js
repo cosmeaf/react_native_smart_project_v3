@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from 'react-native-elements'
 import { TouchableOpacity, Text } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -28,8 +29,20 @@ const AppStack = ({ navigation }) => {
     // initialRouteName = "AddVehicle"
     <Stack.Navigator screenOptions={{ headerTitleAlign: 'center', headerShown: false }}>
       <Stack.Screen name='AppTabStack' component={AppTabStack} />
-      <Stack.Screen name='Vehicle' component={Vehicle} options={{ title: 'Meus Veículos', headerShown: true }} />
-      <Stack.Screen name='AddVehicle' component={AddVehicle} options={{ title: 'Cadastrar Veículo' }} />
+      <Stack.Screen name='Vehicle' component={Vehicle} options={({ navigation, route }) => ({
+        title: 'Meus Veículos',
+        headerShown: true,
+        headerRight: () => (
+          <Button
+            onPress={() => navigation.navigate('AddVehicle')}
+            type='clear'
+            title="Novo"
+          />
+        ),
+      }
+
+      )} />
+      <Stack.Screen name='AddVehicle' component={AddVehicle} options={{ title: 'Cadastrar Veículo', headerShown: true }} />
       <Stack.Screen name='EditVehicle' component={EditVehicle} options={{ title: 'Editar Veículo' }} />
       <Stack.Screen name='VehicleDetails' component={VehicleDetails} options={{ title: 'Detalhes do Veículo', headerShown: true }} />
       <Stack.Screen name='Profile' component={Profile} options={{ title: 'Perfil' }} />

@@ -1,13 +1,14 @@
-import React, { useContext, useState, setState, useEffect } from 'react';
-import { KeyboardAvoidingView, View, Text, StyleSheet, ImageBackground, TouchableOpacity, Image, Alert } from 'react-native';
+import React, { useContext, useState, useEffect } from 'react';
+import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Image, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Icon from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { TextInput, RadioButton } from "react-native-paper";
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Dropdown } from 'react-native-element-dropdown';
+import Modal from "react-native-modal";
+import TabOneLine from '../../../componentes/TabOneLine';
 import GlobalContext from '../../../Contexts/Context';
 import styles from './styles';
+import Api from '../../../service/Api';
 
 
 //https://parallelum.com.br/fipe/api/v2/{vehicleType}/brands/{brandId}/models/{modelId}/years/{yearId}
@@ -24,7 +25,7 @@ const data = [
 
 
 const AddVehicle = ({ navigation }) => {
-  const { isLogged, signout, isLoading } = useContext(GlobalContext);
+  const { isLogged, signout } = useContext(GlobalContext);
   const [isFocus, setIsFocus] = useState(false);
   // useState API FIPE
   const [vehicleType, setVehicleType] = useState(null);
@@ -42,13 +43,18 @@ const AddVehicle = ({ navigation }) => {
   const [fuel, setFuel] = useState('');
   const [odomitter, setOdomitter] = useState('');
   const [plate, setPlate] = useState('');
+  const [isModalVisibleOdomiter, setIsModalVisibleOdomiter] = useState(false);
+  const [isModalVisiblePlate, setIsModalVisiblePlate] = useState(false);
+
+  const handleModalOdomiter = () => setIsModalVisibleOdomiter(() => !isModalVisibleOdomiter);
+  const handleModalPlate = () => setIsModalVisiblePlate(() => !isModalVisiblePlate);
 
 
   useEffect(() => {
     handleBrandId(vehicleType)
     handleModelId(vehicleType, brandId);
     handleFuel(vehicleType, brandId, modelId);
-  }, [vehicleType, brandId, modelId, isLoading]);
+  }, [vehicleType, brandId, modelId]);
 
   // Gent Vehicle Brands 
   const handleBrandId = async (vehicleType) => {
@@ -135,159 +141,173 @@ const AddVehicle = ({ navigation }) => {
     }
   }
 
+  const handlecreateVehicle = async (brand, model, fuell, year, odomitter, plate) => {
+    if (brand == '' || model == '' || fuell == '' || year == '' || odomitter == '' || plate == '') {
+      Alert.alert('Ops! Favor Preencher todos os campos')
+    } else {
+      await Api.createVehicle(brand, model, fuell, year, odomitter, plate)
+      navigation.navigate('Vehicle');
+    }
+  }
+
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.container}
-    >
-      <SafeAreaView style={{ flex: 1, backgroundColor: '#F0F0F0' }}>
-        <KeyboardAwareScrollView>
-          <View style={styles.header}>
-            <View style={styles.headerMenu}>
-              <Icon name="ios-arrow-back-outline" size={30} color="#38A69D" onPress={() => navigation.goBack('vehicle')} />
+    <SafeAreaView style={styles.container}>
+      <ScrollView>
+        <RadioButton.Group onValueChange={newValue => setVehicleType(newValue)} value={vehicleType}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginBottom: 20 }}>
+            <View style={{ flexDirection: 'row', }}>
+              <RadioButton value="cars" />
+              <FontAwesome name="car" size={30} color="#525252" status='unchecked' />
             </View>
-            <Text style={{ alignItems: 'center', fontSize: 18, color: '#38A69D', fontWeight: 'bold' }}> Cadastrar Veículo </Text>
-            <View tyle={styles.headerProfile}>
-              <Icon name="ios-car-outline" size={30} color="#38A69D" />
+            <View style={{ flexDirection: 'row', }}>
+              <RadioButton value="trucks" status='unchecked' />
+              <FontAwesome name="truck" size={30} color="#525252" />
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+              <RadioButton value="motorcycles" status='unchecked' />
+              <FontAwesome name="motorcycle" size={30} color="#525252" />
             </View>
           </View>
-
-          <RadioButton.Group onValueChange={newValue => setVehicleType(newValue)} value={vehicleType}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: '5%' }}>
-              <View style={{ flexDirection: 'row', }}>
-                <RadioButton value="cars" />
-                <FontAwesome name="car" size={30} color="#38A69D" status='unchecked' />
-              </View>
-              <View style={{ flexDirection: 'row', }}>
-                <RadioButton value="trucks" status='unchecked' />
-                <FontAwesome name="truck" size={30} color="#38A69D" />
-              </View>
-              <View style={{ flexDirection: 'row' }}>
-                <RadioButton value="motorcycles" status='unchecked' />
-                <FontAwesome name="motorcycle" size={30} color="#38A69D" />
-              </View>
-            </View>
-          </RadioButton.Group>
-
-          <View style={{ flex: 1, justifyContent: 'center', alignContent: 'center', marginTop: '5%' }}>
-            <View style={{ flex: 1, marginLeft: 10, marginRight: 10, backgroundColor: '#38A69D', borderRadius: 15, padding: 10, }}>
-
-              <Dropdown
-                style={[styles.dropdown, isFocus && { borderColor: '#F1F1F1' }]}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                inputSearchStyle={styles.inputSearchStyle}
-                iconStyle={styles.iconStyle}
-                data={brandsData}
-                search
-                maxHeight={300}
-                labelField="label"
-                valueField="value"
-                placeholder={!isFocus ? 'Selecione Marca' : brands.toString()}
-                searchPlaceholder="Procurar..."
-                value={brands}
-                onFocus={() => setIsFocus(false)}
-                onBlur={() => setIsFocus(true)}
-                onChange={item => {
-                  setIsFocus(false);
-                  setBrandId(item.value)
-                  setBrands(item.label)
-                }}
-              />
-              <Dropdown
-                style={[styles.dropdown, isFocus && { borderColor: '#F1F1F1' }]}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                inputSearchStyle={styles.inputSearchStyle}
-                iconStyle={styles.iconStyle}
-                data={modelsData}
-                search
-                maxHeight={300}
-                labelField="label"
-                valueField="value"
-                placeholder={!isFocus ? 'Selecione Modelo' : model}
-                searchPlaceholder="Procurar..."
-                value={model}
-                onFocus={() => setIsFocus(false)}
-                onBlur={() => setIsFocus(true)}
-                onChange={item => {
-                  setIsFocus(false);
-                  setModelId(item.value)
-                  setModel(item.label)
-                }}
-              />
-              <Dropdown
-                style={[styles.dropdown, isFocus && { borderColor: '#F1F1F1' }]}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                inputSearchStyle={styles.inputSearchStyle}
-                iconStyle={styles.iconStyle}
-                data={yearData}
-                search
-                maxHeight={300}
-                labelField="label"
-                valueField="value"
-                placeholder={!isFocus ? 'Selecione Ano de Fabricação' : year}
-                searchPlaceholder="Procurar..."
-                value={year.split(0, 5)}
-                onFocus={() => setIsFocus(false)}
-                onBlur={() => setIsFocus(true)}
-                onChange={item => {
-                  setIsFocus(false);
-                  setYearId(item.value)
-                  setYear(item.label.slice(0, 5).toString())
-                  setFuel(item.label.slice(5, 20))
-                }}
-              />
-              <TextInput
-                style={{ backgroundColor: '#38A69D', height: 45, marginBottom: 10 }}
-                label="Informe Tipo de Combustível"
-                mode="outlined"
-                theme={{ colors: { primary: '#F1F1F1', placeholder: '#F1F1F1', secondary: '#F1F1F1', text: '#F1F1F1', error: '#f13a59' }, }}
-                borderColor={true}
-                autoCorrect={false}
-                autoCapitalize='none'
-                value={fuel}
-                onChangeText={(text) => setFuel(text)}
-
-              />
-              <TextInput
-                style={{ backgroundColor: '#38A69D', height: 45, marginBottom: 10 }}
-                keyboardType='numeric'
-                label="Atual Km"
-                mode="outlined"
-                theme={{ colors: { primary: '#F1F1F1', placeholder: '#F1F1F1', secondary: '#F1F1F1', text: '#F1F1F1', error: '#f13a59' }, }}
-                borderColor={false}
-                autoCorrect={false}
-                autoCapitalize='none'
-                value={odomitter}
-                onChangeText={(text) => setOdomitter(text)}
-              />
-              <TextInput
-                style={{ backgroundColor: '#38A69D', height: 45 }}
-                theme={{ colors: { primary: '#F1F1F1', placeholder: '#F1F1F1', secondary: '#F1F1F1', text: '#F1F1F1', error: '#f13a59' }, }}
-                label="Placa do Veículo"
-                mode="outlined"
-                //underlineColorAndroid={theme.colors.primary}
-                // underlineColor={theme.colors.primary}
-                // labelField={theme.colors.primary}
-                borderColor={false}
-                autoCorrect={false}
-                autoCapitalize='characters'
-                value={plate}
-                onChangeText={(text) => setPlate(text)}
-              />
-              <TouchableOpacity style={styles.button} activeOpacity={0.8}>
-                <Text style={styles.buttonText}>Salvar</Text>
+        </RadioButton.Group>
+        {/* Brand / marca */}
+        <View style={{ paddingLeft: 10, paddingRight: 10, paddingTop: 10, backgroundColor: '#FFF', marginBottom: 5 }}>
+          <Dropdown
+            style={[styles.dropdown, isFocus && { borderColor: '#CCC' }]}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+            inputSearchStyle={styles.inputSearchStyle}
+            iconStyle={styles.iconStyle}
+            data={brandsData}
+            search
+            maxHeight={300}
+            labelField="label"
+            valueField="value"
+            placeholder={!isFocus ? 'Selecione Marca' : brands.toString()}
+            searchPlaceholder="Digite aqui para Procurar sua marca"
+            value={brands}
+            onFocus={() => setIsFocus(false)}
+            onBlur={() => setIsFocus(true)}
+            onChange={item => {
+              setIsFocus(false);
+              setBrandId(item.value)
+              setBrands(item.label)
+            }}
+          />
+        </View>
+        {/* Model / Modelo */}
+        <View style={{ paddingLeft: 10, paddingRight: 10, paddingTop: 10, backgroundColor: '#FFF', marginBottom: 5 }}>
+          <Dropdown
+            style={[styles.dropdown, isFocus && { borderColor: '#CCC' }]}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+            inputSearchStyle={styles.inputSearchStyle}
+            iconStyle={styles.iconStyle}
+            data={modelsData}
+            search
+            maxHeight={300}
+            labelField="label"
+            valueField="value"
+            placeholder={!isFocus ? 'Selecione Modelo' : model}
+            searchPlaceholder="Digite aqui para Procurar sua modelo"
+            value={model}
+            onFocus={() => setIsFocus(false)}
+            onBlur={() => setIsFocus(true)}
+            onChange={item => {
+              setIsFocus(false);
+              setModelId(item.value)
+              setModel(item.label)
+            }}
+          />
+        </View>
+        {/* Year / Ano */}
+        <View style={{ paddingLeft: 10, paddingRight: 10, paddingTop: 10, backgroundColor: '#FFF', marginBottom: 5 }}>
+          <Dropdown
+            style={[styles.dropdown, isFocus && { borderColor: '#CCC' }]}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={styles.selectedTextStyle}
+            inputSearchStyle={styles.inputSearchStyle}
+            iconStyle={styles.iconStyle}
+            data={yearData}
+            search
+            maxHeight={300}
+            labelField="label"
+            valueField="value"
+            placeholder={!isFocus ? 'Selecione Ano de Fabricação' : year}
+            searchPlaceholder="Digite aqui para procurar ano"
+            value={year.split(0, 5)}
+            onFocus={() => setIsFocus(false)}
+            onBlur={() => setIsFocus(true)}
+            onChange={item => {
+              setIsFocus(false);
+              setYearId(item.value)
+              setYear(item.label.slice(0, 5).toString())
+              setFuel(item.label.slice(5, 20))
+            }}
+          />
+        </View>
+        <TabOneLine title='Combustivel:' subTitle={fuel ? fuel : '...'} />
+        <TabOneLine title='Kilometragem:' subTitle={odomitter ? odomitter : '...'} onPress={handleModalOdomiter} />
+        <TabOneLine title='Placa:' subTitle={plate ? plate : '...'} onPress={handleModalPlate} />
+        {/* MODAL SET ODOMITER  */}
+        <Modal isVisible={isModalVisibleOdomiter} style={styles.modal}>
+          <View style={styles.modalContainer}>
+            <TextInput
+              style={{ height: 40, }}
+              mode='outlined'
+              keyboardType='numeric'
+              placeholder={odomitter ? odomitter : 'Digite sua Kilometragem'}
+              value={odomitter}
+              onChangeText={text => setOdomitter(text)}
+            />
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
+              <TouchableOpacity
+                style={styles.modalButton}
+                onPress={() => setIsModalVisibleOdomiter(false)}
+              >
+                <Text style={styles.modalButtonText}>Salvar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.modalButton}
+                onPress={() => setIsModalVisibleOdomiter(false)}>
+                <Text style={styles.modalButtonText}>Sair</Text>
               </TouchableOpacity>
             </View>
-
           </View>
+        </Modal>
+        {/* MODAL SET PLATE  */}
+        <Modal isVisible={isModalVisiblePlate} style={styles.modal}>
+          <View style={styles.modalContainer}>
+            <TextInput
+              style={{ height: 40, }}
+              mode='outlined'
+              autoCapitalize='characters'
+              placeholder={plate ? plate : 'Digite numero da Placa'}
+              value={plate}
+              onChangeText={text => setPlate(text)}
+            />
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
+              <TouchableOpacity
+                style={styles.modalButton}
+                onPress={() => setIsModalVisiblePlate(false)}
+              >
+                <Text style={styles.modalButtonText}>Salvar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.modalButton}
+                onPress={() => setIsModalVisiblePlate(false)}>
+                <Text style={styles.modalButtonText}>Sair</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+      </ScrollView>
+      <TouchableOpacity style={styles.button} onPress={() => handlecreateVehicle(brands, model, fuel, year, odomitter, plate)}>
+        <Text style={styles.buttonText}>Cadastrar Veículo</Text>
+      </TouchableOpacity>
+    </SafeAreaView>
 
-        </KeyboardAwareScrollView>
-      </SafeAreaView>
-    </KeyboardAvoidingView>
   );
 };
+
 export default AddVehicle;
 

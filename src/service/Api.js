@@ -311,6 +311,80 @@ export default {
     }
   },
   //-------------------------------------------------------------------------
+  // API VEHICLE
+  //-------------------------------------------------------------------------
+  getVehicle: async () => {
+    const value = await AsyncStorage.getItem('accessToken');
+    const token = JSON.parse(value)
+    try {
+      const response = await fetch(`${BASE_API}/vehicle/`, {
+        method: 'GET',
+        headers: {
+          Accept: "application/json",
+          "Content-type": "application/json;charset=UTF-8",
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      if (response.status === 200) {
+        const json = await response.json();
+        return json;
+      } else {
+        console.log('ERROR API READ_VEHICLE ' + response.status)
+        return response.status
+      }
+    } catch (error) {
+      return error;
+    }
+  },
+  createVehicle: async (brand, model, fuell, year, odomitter, plate) => {
+    console.log('CREATE VEHICLE API ' + brand, model, fuell, year, odomitter, plate)
+    const value = await AsyncStorage.getItem('accessToken');
+    const token = JSON.parse(value)
+    try {
+      const response = await fetch(`${BASE_API}/vehicle/`, {
+        method: 'POST',
+        headers: {
+          Accept: "application/json",
+          "Content-type": "application/json;charset=UTF-8",
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ brand, model, fuell, year, odomitter, plate })
+      });
+      if (response.status === 201) {
+        const json = await response.json();
+        return json;
+      } else {
+        throw new Error(`${response.status}`);
+      }
+    } catch (error) {
+      return error;
+    }
+  },
+  deleteVehicle: async (id) => {
+    const value = await AsyncStorage.getItem('accessToken');
+    const token = JSON.parse(value)
+    try {
+      const response = await fetch(`${BASE_API}/vehicle/${id}/`, {
+        method: 'DELETE',
+        headers: {
+          Accept: "application/json",
+          "Content-type": "application/json;charset=UTF-8",
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ id })
+      });
+      if (response.status === 200) {
+        const json = await response.json();
+        return json;
+      } else {
+        console.log('ERROR API DELETE_ADDRESS ' + response.status)
+        return response.status
+      }
+    } catch (error) {
+      return error;
+    }
+  },
+  //-------------------------------------------------------------------------
   // API GET SERVICES
   //-------------------------------------------------------------------------
   getServices: async () => {
