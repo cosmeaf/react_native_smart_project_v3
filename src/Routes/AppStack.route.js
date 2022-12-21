@@ -52,7 +52,16 @@ const AppStack = ({ navigation }) => {
       <Stack.Screen name='Baterias' component={Baterias} options={{ title: 'Baterias', headerShown: true }} />
       <Stack.Screen name='Pneus' component={Pneus} options={{ title: 'Pneus', headerShown: true }} />
       <Stack.Screen name='Consertos' component={Consertos} options={{ title: 'Consertos', headerShown: true }} />
-      <Stack.Screen name='Freios' component={Freios} options={{ title: 'Freios', headerShown: true }} />
+      <Stack.Screen name='Freios' component={Freios}
+        options={{
+          title: 'Serviço de Freios',
+          headerShown: true,
+          // headerTransparent: true,
+          // headerTintColor: '#fff',
+          // headerStyle: {
+          //   backgroundColor: 'transparent',
+          // }
+        }} />
       <Stack.Screen name='Manutencao' component={Manutencao} options={{ title: 'Manutenção', headerShown: true }} />
       <Stack.Screen name='Mecanico' component={Mecanico} options={{ title: 'Mecânico', headerShown: true }} />
       <Stack.Screen name='Revisao' component={Revisao} options={{ title: 'Revisão', headerShown: true }} />
