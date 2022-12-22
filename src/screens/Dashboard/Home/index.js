@@ -6,10 +6,9 @@ import SearcheArea from '../../../componentes/SearcheArea';
 import Carousel from '../../../componentes/Carousel';
 import ServicesTypes from '../../../componentes/ServicesTypes';
 
-export default ({ navigation }) => {
+export default ({ navigation, route }) => {
 
   function handleClick(data) {
-    console.log(data)
     navigation.navigate(data)
   }
 

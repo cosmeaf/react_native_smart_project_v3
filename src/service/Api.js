@@ -391,7 +391,7 @@ export default {
     const value = await AsyncStorage.getItem('accessToken');
     const token = JSON.parse(value)
     try {
-      const response = await fetch(`${BASE_API}/services/`, {
+      const response = await fetch(`${BASE_API}/service/`, {
         method: 'GET',
         headers: {
           Accept: "application/json",
@@ -401,7 +401,103 @@ export default {
       });
       if (response.status === 200) {
         const json = await response.json();
-        console.log('GET SERVICES ' + json)
+        return json;
+      } else {
+        return response.status;
+      }
+    } catch (error) {
+      return error;
+    }
+  },
+  //-------------------------------------------------------------------------
+  // API GET HOUR SERVICE
+  //-------------------------------------------------------------------------
+  getHourService: async () => {
+    const value = await AsyncStorage.getItem('accessToken');
+    const token = JSON.parse(value)
+    try {
+      const response = await fetch(`${BASE_API}/hour-service/`, {
+        method: 'GET',
+        headers: {
+          Accept: "application/json",
+          "Content-type": "application/json;charset=UTF-8",
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      if (response.status === 200) {
+        const json = await response.json();
+        return json;
+      } else {
+        return response.status;
+      }
+    } catch (error) {
+      return error;
+    }
+  },
+  //-------------------------------------------------------------------------
+  // API GET HOUR AVAILABILITY
+  //-------------------------------------------------------------------------
+  getHourAvailibility: async () => {
+    try {
+      const response = await fetch(`${BASE_API}/hour-availability/`, {
+        method: 'GET',
+        headers: {
+          Accept: "application/json",
+          "Content-type": "application/json;charset=UTF-8",
+        },
+      });
+      if (response.status === 200) {
+        const json = await response.json();
+        return json;
+      } else {
+        return response.status;
+      }
+    } catch (error) {
+      return error;
+    }
+  },
+  //-------------------------------------------------------------------------
+  // API SET SCHEDULE
+  //-------------------------------------------------------------------------
+  getSchedule: async () => {
+    const value = await AsyncStorage.getItem('accessToken');
+    const token = JSON.parse(value)
+    try {
+      const response = await fetch(`${BASE_API}/schedule/`, {
+        method: 'GET',
+        headers: {
+          Accept: "application/json",
+          "Content-type": "application/json;charset=UTF-8",
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      if (response.status === 200) {
+        const json = await response.json();
+        return json;
+      } else {
+        console.log('ERROR API READ_VEHICLE ' + response.status)
+        return response.status
+      }
+    } catch (error) {
+      return error;
+    }
+  },
+  createSchedule: async () => {
+    console.log('CREATE SCHEDULE API ')
+    const value = await AsyncStorage.getItem('accessToken');
+    const token = JSON.parse(value)
+    try {
+      const response = await fetch(`${BASE_API}/schedule/`, {
+        method: 'POST',
+        headers: {
+          Accept: "application/json",
+          "Content-type": "application/json;charset=UTF-8",
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({})
+      });
+      if (response.status === 201) {
+        const json = await response.json();
         return json;
       } else {
         throw new Error(`${response.status}`);

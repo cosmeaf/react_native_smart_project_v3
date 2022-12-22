@@ -2,12 +2,18 @@ import React, { useState } from 'react'
 import { StyleSheet, ScrollView, Text, View, Image, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import ScheduleModal from '../../../componentes/ScheduleModal';
 const image = require('../../../assets/image/slide/007_image.jpg')
+const icon = require('../../../assets/icons/brake.png')
 
-const Freios = () => {
+const Freios = ({ navigation, route }) => {
   const [favorited, setFavorited] = useState(false);
+  const [selectedService, setSelectedService] = useState('');
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handlefavorited = () => setFavorited(() => !favorited);
+  const handleisModalVisible = () => setIsModalVisible(() => !isModalVisible);
+
 
   return (
     <View style={{ flex: 1 }}>
@@ -59,13 +65,18 @@ const Freios = () => {
             </Text>
           </View>
         </View>
-        <TouchableOpacity
-          style={{ justifyContent: 'center', alignItems: 'center', padding: 10, marginBottom: 20, borderRadius: 10, borderWidth: 0.5, marginLeft: 14, marginRight: 14, backgroundColor: 'green' }}>
+        <TouchableOpacity style={styles.button} onPress={handleisModalVisible}>
           <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#FFF' }}>
             Agendar Serviço
           </Text>
         </TouchableOpacity>
       </ScrollView>
+      {/* MODAL */}
+      <ScheduleModal
+        isVisible={isModalVisible}
+        image={icon}
+        onPress={() => setIsModalVisible(false)}
+      />
     </View>
   )
 }
@@ -76,5 +87,6 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: 200,
-  }
+  },
+  button: { justifyContent: 'center', alignItems: 'center', padding: 10, marginBottom: 20, borderRadius: 10, borderWidth: 0.5, marginLeft: 14, marginRight: 14, backgroundColor: 'green' }
 })
