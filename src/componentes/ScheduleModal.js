@@ -17,7 +17,7 @@ const ScheduleModal = ({ navigation, route, isVisible, onPress, image }) => {
   const [hour, setHour] = useState('');
   const [date, setdate] = useState('');
   const [serviceHour, setServiceHour] = useState([]);
-  const [freeHour, setFreeHour] = useState([]);
+  const [availabilityHour, setAvailabilityHour] = useState([]);
   const [selectedYear, setSelectedYear] = useState(0);
   const [selectedMonth, setSelectedMonth] = useState(0);
   const [selectedDays, setSelectedDays] = useState(0);
@@ -45,10 +45,10 @@ const ScheduleModal = ({ navigation, route, isVisible, onPress, image }) => {
       // Create new format date 'YYYY-MM-DD'
       let selDate = `${year}-${month}-${day}`;
       // Map verify if date exist in calendater API
-      let availability = freeHour.filter(e => e.day === selDate)
+
       // Push data on Array and get result fo calendar screen
       newListDays.push({
-        status: availability.length > 0 ? false : true,
+        // status: availability.length > 0 ? false : true,
         weekday: days[d.getDay()],
         number: i
       })
@@ -57,10 +57,9 @@ const ScheduleModal = ({ navigation, route, isVisible, onPress, image }) => {
     setSelectedDays(0);
     setListHours([]);
     setSelectedHour(0);
-  }, [selectedYear, selectedMonth, freeHour])
+  }, [selectedYear, selectedMonth, availabilityHour])
 
   useEffect(() => {
-    console.log(selectedDays)
     getHourService();
   }, [selectedDays])
 
@@ -89,7 +88,6 @@ const ScheduleModal = ({ navigation, route, isVisible, onPress, image }) => {
     setSelectedMonth(mountDate.getMonth());
     setSelectedDays(mountDate.getDay(0))
   }
-
 
 
   const getAddress = async () => {
@@ -131,7 +129,7 @@ const ScheduleModal = ({ navigation, route, isVisible, onPress, image }) => {
     //setFreeHour([])
     let res = await Api.getHourAvailibility();
     if (res) {
-      setFreeHour(res)
+      setAvailabilityHour(res)
     } else {
       console.log('Ops! Erro ao Carregar Hora Disponível', `Error ${res.status}`)
     }

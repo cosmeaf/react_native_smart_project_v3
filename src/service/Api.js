@@ -71,7 +71,6 @@ export default {
   },
   // SIGN-UP
   signUp: async (username, email, password, password2, first_name = null, last_name = null) => {
-    console.log(username, email, password, password2)
     try {
       const response = await fetch(`${BASE_API}/register/`, {
         method: 'POST',
@@ -110,7 +109,6 @@ export default {
         const json = await response.json();
         return json;
       } else {
-        console.log('ERROR API READ_USER' + response.status)
         return response.status
       }
     } catch (error) {
@@ -134,7 +132,6 @@ export default {
         const json = await response.json();
         return json;
       } else {
-        console.log('ERROR API PUT_USER ' + response.status)
         return response.status
       }
     } catch (error) {
@@ -158,7 +155,6 @@ export default {
         const json = await response.json();
         return json;
       } else {
-        console.log('ERROR API PUT_USER ' + response.status)
         return response.status
       }
     } catch (error) {
@@ -185,7 +181,6 @@ export default {
         const json = await response.json();
         return json;
       } else {
-        console.log('ERROR API READ_PROFILE ' + response.status)
         return response.status
       }
     } catch (error) {
@@ -193,8 +188,6 @@ export default {
     }
   },
   updateProfile: async (id, birthday, phone_number) => {
-    console.log(`UPDATE PROFILE = ${id}, ${birthday}, ${phone_number}`)
-
     const value = await AsyncStorage.getItem('accessToken');
     const token = JSON.parse(value)
     try {
@@ -211,7 +204,6 @@ export default {
         const json = await response.json();
         return json;
       } else {
-        console.log('ERROR API PUT_USER ' + response.status)
         return response.status
       }
     } catch (error) {
@@ -232,7 +224,6 @@ export default {
         let json = await response.json();
         return json;
       } else {
-        console.log('ERROR API VIACEP ' + response.status)
         return response.status
       }
     } catch (error) {
@@ -255,7 +246,6 @@ export default {
         const json = await response.json();
         return json;
       } else {
-        console.log('ERROR API READ_ADDRESS ' + response.status)
         return response.status
       }
     } catch (error) {
@@ -263,7 +253,6 @@ export default {
     }
   },
   createAddress: async (cep, logradouro, complemento, bairro, localidade, uf) => {
-    console.log('CREATE ADDRESS API ' + cep, logradouro, complemento, bairro, localidade, uf)
     const value = await AsyncStorage.getItem('accessToken');
     const token = JSON.parse(value)
     try {
@@ -303,7 +292,6 @@ export default {
         const json = await response.json();
         return json;
       } else {
-        console.log('ERROR API DELETE_ADDRESS ' + response.status)
         return response.status
       }
     } catch (error) {
@@ -329,7 +317,6 @@ export default {
         const json = await response.json();
         return json;
       } else {
-        console.log('ERROR API READ_VEHICLE ' + response.status)
         return response.status
       }
     } catch (error) {
@@ -337,7 +324,6 @@ export default {
     }
   },
   createVehicle: async (brand, model, fuell, year, odomitter, plate) => {
-    console.log('CREATE VEHICLE API ' + brand, model, fuell, year, odomitter, plate)
     const value = await AsyncStorage.getItem('accessToken');
     const token = JSON.parse(value)
     try {
@@ -377,7 +363,6 @@ export default {
         const json = await response.json();
         return json;
       } else {
-        console.log('ERROR API DELETE_ADDRESS ' + response.status)
         return response.status
       }
     } catch (error) {
@@ -475,15 +460,13 @@ export default {
         const json = await response.json();
         return json;
       } else {
-        console.log('ERROR API READ_VEHICLE ' + response.status)
         return response.status
       }
     } catch (error) {
       return error;
     }
   },
-  createSchedule: async () => {
-    console.log('CREATE SCHEDULE API ')
+  createSchedule: async (day, address, vehicle, service, hour) => {
     const value = await AsyncStorage.getItem('accessToken');
     const token = JSON.parse(value)
     try {
@@ -494,13 +477,36 @@ export default {
           "Content-type": "application/json;charset=UTF-8",
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({})
+        body: JSON.stringify({ day, address, vehicle, service, hour })
       });
       if (response.status === 201) {
         const json = await response.json();
         return json;
       } else {
         throw new Error(`${response.status}`);
+      }
+    } catch (error) {
+      return error;
+    }
+  },
+  deleteSchedule: async (id) => {
+    const value = await AsyncStorage.getItem('accessToken');
+    const token = JSON.parse(value)
+    try {
+      const response = await fetch(`${BASE_API}/schedule/${id}/`, {
+        method: 'DELETE',
+        headers: {
+          Accept: "application/json",
+          "Content-type": "application/json;charset=UTF-8",
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ id })
+      });
+      if (response.status === 200) {
+        const json = await response.json();
+        return json;
+      } else {
+        return response.status
       }
     } catch (error) {
       return error;

@@ -1,19 +1,36 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { StyleSheet, ScrollView, Text, View, Image, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import ScheduleModal from '../../../componentes/ScheduleModal';
+import AppointmentModal from '../../../componentes/AppointmentModal';
+import Api from '../../../service/Api';
 const image = require('../../../assets/image/slide/007_image.jpg')
 const icon = require('../../../assets/icons/brake.png')
 
+
 const Freios = ({ navigation, route }) => {
   const [favorited, setFavorited] = useState(false);
-  const [selectedService, setSelectedService] = useState('');
+  const [service, setService] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handlefavorited = () => setFavorited(() => !favorited);
   const handleisModalVisible = () => setIsModalVisible(() => !isModalVisible);
 
+  useEffect(() => {
+    getServices();
+  }, [])
+
+  const getServices = async () => {
+    let res = await Api.getServices();
+    if (res) {
+      res.map((item, key) => (
+        setService(item)
+      ));
+    } else {
+      console.warn('Ops! Estamos com problema para acessar suas informação. Pro Favor Tente mais tarde', `Error ${res.status}`)
+    }
+  }
 
   return (
     <View style={{ flex: 1 }}>
@@ -72,9 +89,10 @@ const Freios = ({ navigation, route }) => {
         </TouchableOpacity>
       </ScrollView>
       {/* MODAL */}
-      <ScheduleModal
+      <AppointmentModal
         isVisible={isModalVisible}
-        image={icon}
+        // image={icon}
+        serviceId={service.id}
         onPress={() => setIsModalVisible(false)}
       />
     </View>

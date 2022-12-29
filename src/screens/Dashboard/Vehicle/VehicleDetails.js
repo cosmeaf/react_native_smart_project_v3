@@ -6,7 +6,6 @@ import TabOneLine from '../../../componentes/TabOneLine';
 import Api from '../../../service/Api';
 
 export default ({ navigation, route }) => {
-  console.log(route.params)
 
   const deleteVehicle = (id) => {
     if (id) {

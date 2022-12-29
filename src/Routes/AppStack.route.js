@@ -9,6 +9,7 @@ import Vehicle from '../screens/Dashboard/Vehicle';
 import AddVehicle from '../screens/Dashboard/Vehicle/addVehiche';
 import EditVehicle from '../screens/Dashboard/Vehicle/EditVehicle';
 import VehicleDetails from '../screens/Dashboard/Vehicle/VehicleDetails';
+import ScheduleDetails from '../screens/Dashboard/Schedule/ScheduleDetails';
 import Profile from '../screens/Dashboard/Profile';
 import Settings from '../screens/Dashboard/Settings';
 import User from '../screens/Dashboard/User';
@@ -45,6 +46,7 @@ const AppStack = ({ navigation }) => {
       <Stack.Screen name='AddVehicle' component={AddVehicle} options={{ title: 'Cadastrar Veículo', headerShown: true }} />
       <Stack.Screen name='EditVehicle' component={EditVehicle} options={{ title: 'Editar Veículo' }} />
       <Stack.Screen name='VehicleDetails' component={VehicleDetails} options={{ title: 'Detalhes do Veículo', headerShown: true }} />
+      <Stack.Screen name='ScheduleDetails' component={ScheduleDetails} options={{ title: 'Detalhes de Agendamento', headerShown: true }} />
       <Stack.Screen name='Profile' component={Profile} options={{ title: 'Perfil' }} />
       <Stack.Screen name='User' component={User} options={{ title: 'Editar perfil', headerShown: true }} />
       <Stack.Screen name='Settings' component={Settings} options={{ title: 'Configurações', headerShown: true }} />

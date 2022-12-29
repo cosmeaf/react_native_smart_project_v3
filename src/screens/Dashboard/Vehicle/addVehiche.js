@@ -15,8 +15,8 @@ import Api from '../../../service/Api';
 //http://parallelum.com.br/fipe/api/v2/{vehicleType}/brands/{brandId}/models/{modelId}/years/{yearId}
 //https://parallelum.com.br/fipe/api/v2/cars/brands/25/models/4010/years/2007-1
 
-const FIPE_API = 'http://parallelum.com.br/fipe/api/v2'
-//const FIPE_API = 'https://parallelum.com.br/fipe/api/v2'
+//const FIPE_API = 'http://parallelum.com.br/fipe/api/v2'
+const FIPE_API = 'https://parallelum.com.br/fipe/api/v2'
 
 const data = [
   { label: 'item data ...', value: '1' },
