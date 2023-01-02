@@ -1,19 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Image, FlatList, RefreshControl, ActivityIndicator } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import Moment from 'moment';
+import GlobalContext from '../../../Contexts/Context';
 import Api from '../../../service/Api';
 
 export default () => {
+  const { authentication, isLoading, signout } = useContext(GlobalContext);
   const navigation = useNavigation();
   const [refreshing, setRefreshing] = useState(true);
   const [schedules, setSchedule] = useState([]);
 
+  if (!authentication) {
+    signout();
+  }
+
   useEffect(() => {
     getSchedule();
-  }, [])
+  }, [authentication])
 
   const getSchedule = async () => {
     let res = await Api.getSchedule();
@@ -55,7 +61,7 @@ export default () => {
           <Text style={{ fontSize: 14, }}>{schedule.vehicle}</Text>
         </View>
         <View>
-          <Text style={{ fontSize: 14 }}>{schedule.day}</Text>
+          <Text style={{ fontSize: 14 }}>{schedule.day.split('-').reverse('/')}</Text>
           <Text style={{ fontSize: 14 }}>{schedule.hour}</Text>
         </View>
         <Ionicons name='chevron-forward' size={30} />

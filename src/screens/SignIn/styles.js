@@ -41,6 +41,7 @@ export const styles = StyleSheet.create({
   button: {
     marginHorizontal: 20,
     backgroundColor: '#fafafa',
+    borderRadius: 10,
     marginTop: 12,
     paddingVertical: 10,
     alignItems: 'center',
@@ -53,7 +54,7 @@ export const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
-  buttonText: { fontSize: 16, color: '#E44D26' },
+  buttonText: { fontSize: 16, color: '#54Af89' },
   forgotPasswordText: {
     marginHorizontal: 20,
     marginTop: 20,

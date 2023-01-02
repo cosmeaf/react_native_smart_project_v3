@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, ScrollView, Image, Animated, FlatList, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import iconData from '../../../model/data/iconData';
@@ -6,11 +6,20 @@ import resourceData from '../../../model/data/resourceData';
 
 
 export default ({ navigation }) => {
+  const { authentication, isLoading, signout } = useContext(GlobalContext);
+
+  if (!authentication) {
+    signout();
+  }
+
+  useEffect(() => {
+  }, [authentication])
 
   function handleService(service) {
-    console.log('CLICLOU ' + service)
   }
+
   function getServiceItem({ item: service }) {
+
     return (
       <View>
         <TouchableOpacity onPress={() => handleService(service.id)}
@@ -19,7 +28,9 @@ export default ({ navigation }) => {
             style={{ width: 60, height: 60 }}
           />
         </TouchableOpacity>
-        <Text style={{ justifyContent: 'center', alignItems: 'center', marginRight: 10, fontWeight: '500', marginTop: 10, fontSize: 12, textAlign: 'center' }}>{service.title}</Text>
+        <Text
+          style={{ justifyContent: 'center', alignItems: 'center', marginRight: 10, fontWeight: '500', marginTop: 10, fontSize: 12, textAlign: 'center' }}>{service.title}
+        </Text>
       </View>
     );
   }

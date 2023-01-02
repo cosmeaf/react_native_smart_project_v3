@@ -12,8 +12,8 @@ const Route = () => {
 
   if (isLoading) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size='large' color="#38A69D" />
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#54Af89' }}>
+        <ActivityIndicator size='large' color="#FFF" />
       </View>
     );
   }

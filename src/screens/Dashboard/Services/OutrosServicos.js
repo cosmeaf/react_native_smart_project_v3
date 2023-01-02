@@ -5,16 +5,17 @@ import { Ionicons } from '@expo/vector-icons';
 import ScheduleModal from '../../../componentes/ScheduleModal';
 import AppointmentModal from '../../../componentes/AppointmentModal';
 import Api from '../../../service/Api';
-const image = require('../../../assets/image/slide/007_image.jpg')
+const image = require('../../../assets/image/slide/001_image.jpg')
 const icon = require('../../../assets/icons/brake.png')
 
 
-const Freios = ({ navigation, route }) => {
+const OutrosServicos = ({ navigation, route }) => {
   const [favorited, setFavorited] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handlefavorited = () => setFavorited(() => !favorited);
   const handleisModalVisible = () => setIsModalVisible(() => !isModalVisible);
+
 
   return (
     <View style={{ flex: 1 }}>
@@ -38,14 +39,9 @@ const Freios = ({ navigation, route }) => {
             <Text style={{ fontSize: 14, fontWeight: 'bold' }}>Favoritos</Text>
           </View>
           <Text style={{ marginBottom: 10, letterSpacing: 1 }}>
-            As pastilhas de freio devem ser revisadas a cada 10 mil km rodados. Apesar de que muitas pastilhas têm algum tipo de aviso de desgaste, as pastilhas do seu carro podem acabar sem aviso prévio. Dessa maneira, o melhor é fazer a revisão periódica e evitar ser pego desprevenido.
+            Não encontrou o que desejava? Não tem problema, a Smart Mecânico quer te ouvir e irá apoiar no que for necessário, deixe-nos saber qual seria a sua necessidade e iremos orçar o melhor custo x benefício a você.
           </Text>
-          <Text style={{ marginBottom: 10, letterSpacing: 1 }}>
-            Por outro lado, o freio de seu carro não é somente de pastilhas de freio. Ele é um sistema composto por várias peças. Mas não se preocupe nossos mecânicos estão preparados para todo tipo de serviço de freios.
-          </Text>
-          <Text style={{ marginBottom: 10, letterSpacing: 1 }}>
-            Por isso, ao trocar as pastilhas de freio do seu carro, checamos todo o sistema de freio: cilindro mestre, cilindros de roda, discos de freio, flexíveis, etc. Este procedimento é muito importante porque pode evitar imprevistos futuros.
-          </Text>
+
           <Text style={{ fontSize: 22, fontWeight: 'bold', marginBottom: 20, marginTop: 10 }}>Pré-requesitos</Text>
           <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginRight: 10 }}>
             <Ionicons name="checkmark-circle" size={24} color="green" />
@@ -76,15 +72,15 @@ const Freios = ({ navigation, route }) => {
       <AppointmentModal
         isVisible={isModalVisible}
         // image={icon}
-        serviceId='cd521d40-e0b0-4092-8ae6-75f844da36de'
-        serviceTitle="Serviço de Freio"
+        serviceId="d4221a49-cb4e-462d-9d0a-850cd9529925"
+        serviceTitle="Outros serviços / Orçamento"
         onPress={() => setIsModalVisible(false)}
       />
     </View>
   )
 }
 
-export default Freios
+export default OutrosServicos
 
 const styles = StyleSheet.create({
   image: {

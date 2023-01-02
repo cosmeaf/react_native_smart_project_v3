@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const BASE_API = 'http://10.0.0.162/api'
+// const BASE_API = 'http://127.0.0.1/api'
 //const BASE_API = 'http://smartmecanico.duckdns.org:8002/api/v1'
 
 
@@ -83,8 +84,10 @@ export default {
       if (response.status === 201) {
         const json = await response.json();
         return json;
-      } else {
-        throw new Error(`${response.status}`);
+      } else if (response.status !== 201) {
+        const status = response.status;
+        const json = await response.json();
+        return { code: status, data: json }
       }
     } catch (error) {
       return error;

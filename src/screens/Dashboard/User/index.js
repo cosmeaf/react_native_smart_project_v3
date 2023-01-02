@@ -12,7 +12,7 @@ import Api from '../../../service/Api';
 
 
 export default ({ navigation }) => {
-  const { signout } = useContext(GlobalContext);
+  const { authentication, isLoading, signout } = useContext(GlobalContext);
   const [profile, setProfile] = useState([]);
   const [user, setUser] = useState([]);
   const [birthday, setBirthday] = useState('');
@@ -31,10 +31,14 @@ export default ({ navigation }) => {
   const handleModalPhone = () => setIsModalVisiblePhone(() => !isModalVisiblePhone);
   const handleModalBrithday = () => setIsModalVisibleBirthday(() => !isModalVisibleBrithday);
 
+  if (!authentication) {
+    signout();
+  }
+
   useEffect(() => {
     getProfile();
     getUser();
-  }, []);
+  }, [authentication]);
 
   const getProfile = async () => {
     let res = await Api.getProfile();
@@ -43,7 +47,6 @@ export default ({ navigation }) => {
         setProfile(item)
       ));
     } else {
-      console.warn('Ops! Estamos com problema para acessar suas informação. Pro Favor Tente mais tarde', `Error ${res.status}`)
       signout();
     }
   }
@@ -55,7 +58,6 @@ export default ({ navigation }) => {
         setUser(item)
       ));
     } else {
-      console.warn('Ops! Estamos com problema para acessar suas informação. Pro Favor Tente mais tarde', `Error ${res.status}`)
       signout();
     }
   }

@@ -1,24 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Image, FlatList } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import GlobalContext from '../../../Contexts/Context';
 import Api from '../../../service/Api';
 
 
 export default ({ navigation }) => {
+  const { authentication, isLoading, signout } = useContext(GlobalContext);
   const [vehicles, setVehicles] = useState([]);
+
+  if (!authentication) {
+    signout();
+  }
 
   useEffect(() => {
     getVehicle();
-  }, [])
+  }, [authentication])
 
   const getVehicle = async () => {
     let res = await Api.getVehicle();
     if (res) {
       setVehicles(res)
     } else {
-      console.warn('Ops! Estamos com problema para acessar suas informação. Pro Favor Tente mais tarde', `Error ${res.status}`)
       signout();
     }
   }

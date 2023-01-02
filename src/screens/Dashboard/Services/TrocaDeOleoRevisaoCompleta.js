@@ -9,7 +9,7 @@ const image = require('../../../assets/image/slide/007_image.jpg')
 const icon = require('../../../assets/icons/brake.png')
 
 
-const Freios = ({ navigation, route }) => {
+const TrocaDeOleoRevisaoCompleta = ({ navigation, route }) => {
   const [favorited, setFavorited] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -37,15 +37,21 @@ const Freios = ({ navigation, route }) => {
             }
             <Text style={{ fontSize: 14, fontWeight: 'bold' }}>Favoritos</Text>
           </View>
+          <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Troca de Óleo</Text>
           <Text style={{ marginBottom: 10, letterSpacing: 1 }}>
-            As pastilhas de freio devem ser revisadas a cada 10 mil km rodados. Apesar de que muitas pastilhas têm algum tipo de aviso de desgaste, as pastilhas do seu carro podem acabar sem aviso prévio. Dessa maneira, o melhor é fazer a revisão periódica e evitar ser pego desprevenido.
+            Recomendamos esse serviço a cada 06 meses de utilização do automóvel ou 6.000 km rodados. Tal função irá manter seu veículo em 3 excelentes condições, e muito provavelmente irá eliminar surpresas indesejáveis. Trocas de óleo regulares estendem a vida útil do seu carro e também contribuem para eventuais vendas.
           </Text>
+          <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Revisão Completa</Text>
           <Text style={{ marginBottom: 10, letterSpacing: 1 }}>
-            Por outro lado, o freio de seu carro não é somente de pastilhas de freio. Ele é um sistema composto por várias peças. Mas não se preocupe nossos mecânicos estão preparados para todo tipo de serviço de freios.
+            Serviço de revisão automotiva preventiva de funcionamento e estado de conservação de 50 itens do seu veículo. Serão verificados itens relacionados à óleo e fluídos, filtros, faróis e luzes, pneus, segurança, sistema de freios, bateria, entre outros. Ademais inclui indicação, sempre que necessário, da substituição de itens que possam comprometer a segurança e dirigibilidade do seu automóvel.
           </Text>
-          <Text style={{ marginBottom: 10, letterSpacing: 1 }}>
-            Por isso, ao trocar as pastilhas de freio do seu carro, checamos todo o sistema de freio: cilindro mestre, cilindros de roda, discos de freio, flexíveis, etc. Este procedimento é muito importante porque pode evitar imprevistos futuros.
-          </Text>
+          {/* Details about Services */}
+          <TouchableOpacity
+            onPress={() => navigation.navigate('ListaTrocaDeOleoRevisaoCompleta')}
+            style={{ alignItems: 'flex-end', marginTop: 10, marginBottom: 10 }}>
+            <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'green' }}> Veja Mais... </Text>
+          </TouchableOpacity>
+          {/* Pre requ */}
           <Text style={{ fontSize: 22, fontWeight: 'bold', marginBottom: 20, marginTop: 10 }}>Pré-requesitos</Text>
           <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginRight: 10 }}>
             <Ionicons name="checkmark-circle" size={24} color="green" />
@@ -76,15 +82,15 @@ const Freios = ({ navigation, route }) => {
       <AppointmentModal
         isVisible={isModalVisible}
         // image={icon}
-        serviceId='cd521d40-e0b0-4092-8ae6-75f844da36de'
-        serviceTitle="Serviço de Freio"
+        serviceId="13843b1a-da54-44fa-8155-75b7bc0876a8"
+        serviceTitle="Troca de Óleo + Revisão Básica"
         onPress={() => setIsModalVisible(false)}
       />
     </View>
   )
 }
 
-export default Freios
+export default TrocaDeOleoRevisaoCompleta;
 
 const styles = StyleSheet.create({
   image: {

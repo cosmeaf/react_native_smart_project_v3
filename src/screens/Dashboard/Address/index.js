@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { ScrollView, View, TextInput, StyleSheet, Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Modal from "react-native-modal";
 import TabOneLine from '../../../componentes/TabOneLine';
+import GlobalContext from '../../../Contexts/Context';
 import Api from '../../../service/Api';
 
 export default ({ navigation }) => {
+  const { authentication, signout } = useContext(GlobalContext);
   const [address, setAddress] = useState({});
   const [cep, setCep] = useState('');
   const [logradouro, setLogradouro] = useState('');
@@ -18,13 +20,16 @@ export default ({ navigation }) => {
   const [isModalVisibleComplemento, setIsModalVisibleComplemento] = useState(false)
   const [isLoading, setIsLoading] = useState(false);
 
+  if (!authentication) {
+    signout();
+  }
+
   const handleModalCep = () => setIsModalVisibleCep(() => !isModalVisibleCep);
   const handleModalComplemento = () => setIsModalVisibleComplemento(() => !isModalVisibleComplemento);
 
   useEffect(() => {
     getAddress();
-
-  }, []);
+  }, [authentication]);
 
   const viaCepApi = async (cep) => {
     let res = await Api.getCep(cep);

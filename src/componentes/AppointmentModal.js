@@ -14,7 +14,7 @@ const days = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
 
 
 
-const AppointmentModal = ({ isVisible, onPress, serviceId }) => {
+const AppointmentModal = ({ isVisible, onPress, serviceId, serviceTitle }) => {
   const navigation = useNavigation();
   const [selectedDay, setSelectedDay] = useState(0);
   const [selectedMonth, setSelectedMonth] = useState(0);
@@ -156,8 +156,6 @@ const AppointmentModal = ({ isVisible, onPress, serviceId }) => {
   }
 
 
-
-
   return (
     <Modal isVisible={isVisible} animationIn='slideInUp' animationOut='slideOutDown' style={styles.modal}>
       {/* Modal header */}
@@ -167,7 +165,7 @@ const AppointmentModal = ({ isVisible, onPress, serviceId }) => {
       </TouchableOpacity>
       {/* Modal Body */}
       <View style={{ flex: 0.6, marginLeft: 14, marginRight: 14, marginBottom: 20 }}>
-        <TabOneLine title='Serviço:' subTitle='Serviço de Freio' />
+        <TabOneLine title='Serviço:' subTitle={serviceTitle} />
         <TabOneLine title='Veículo:' subTitle={vehicle.plate} />
         <View style={{ flexDirection: 'row', height: 40, backgroundColor: '#FFF', justifyContent: 'space-between', alignItems: 'center' }}>
           <TouchableOpacity style={{ marginLeft: 40 }} onPress={handleLeftClick}>

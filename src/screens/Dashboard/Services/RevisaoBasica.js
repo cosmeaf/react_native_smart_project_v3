@@ -5,11 +5,11 @@ import { Ionicons } from '@expo/vector-icons';
 import ScheduleModal from '../../../componentes/ScheduleModal';
 import AppointmentModal from '../../../componentes/AppointmentModal';
 import Api from '../../../service/Api';
-const image = require('../../../assets/image/slide/007_image.jpg')
+const image = require('../../../assets/image/slide/005_image.jpg')
 const icon = require('../../../assets/icons/brake.png')
 
 
-const Freios = ({ navigation, route }) => {
+const RevisaoBasica = ({ navigation, route }) => {
   const [favorited, setFavorited] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -38,14 +38,15 @@ const Freios = ({ navigation, route }) => {
             <Text style={{ fontSize: 14, fontWeight: 'bold' }}>Favoritos</Text>
           </View>
           <Text style={{ marginBottom: 10, letterSpacing: 1 }}>
-            As pastilhas de freio devem ser revisadas a cada 10 mil km rodados. Apesar de que muitas pastilhas têm algum tipo de aviso de desgaste, as pastilhas do seu carro podem acabar sem aviso prévio. Dessa maneira, o melhor é fazer a revisão periódica e evitar ser pego desprevenido.
+            Serviço de revisão automotiva preventiva de funcionamento e estado de conservação de itens básicos, o que garante uma maior segurança e vitaliciedade do seu veículo. Serão verificados itens relacionados a óleo e fluídos, filtros, faróis e luzes, pneus, sistema de freios, bateria, entre outros.
           </Text>
-          <Text style={{ marginBottom: 10, letterSpacing: 1 }}>
-            Por outro lado, o freio de seu carro não é somente de pastilhas de freio. Ele é um sistema composto por várias peças. Mas não se preocupe nossos mecânicos estão preparados para todo tipo de serviço de freios.
-          </Text>
-          <Text style={{ marginBottom: 10, letterSpacing: 1 }}>
-            Por isso, ao trocar as pastilhas de freio do seu carro, checamos todo o sistema de freio: cilindro mestre, cilindros de roda, discos de freio, flexíveis, etc. Este procedimento é muito importante porque pode evitar imprevistos futuros.
-          </Text>
+          {/* Details about Services */}
+          <TouchableOpacity
+            onPress={() => navigation.navigate('ListaRevisaoBasica')}
+            style={{ alignItems: 'flex-end', marginTop: 10, marginBottom: 10 }}>
+            <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'green' }}> Veja Mais... </Text>
+          </TouchableOpacity>
+          {/* Pre requ */}
           <Text style={{ fontSize: 22, fontWeight: 'bold', marginBottom: 20, marginTop: 10 }}>Pré-requesitos</Text>
           <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginRight: 10 }}>
             <Ionicons name="checkmark-circle" size={24} color="green" />
@@ -76,15 +77,15 @@ const Freios = ({ navigation, route }) => {
       <AppointmentModal
         isVisible={isModalVisible}
         // image={icon}
-        serviceId='cd521d40-e0b0-4092-8ae6-75f844da36de'
-        serviceTitle="Serviço de Freio"
+        serviceId="76a2d2f4-c76c-4f52-9ff7-1a49fb44fa93"
+        serviceTitle="Revisão Básica"
         onPress={() => setIsModalVisible(false)}
       />
     </View>
   )
 }
 
-export default Freios
+export default RevisaoBasica;
 
 const styles = StyleSheet.create({
   image: {

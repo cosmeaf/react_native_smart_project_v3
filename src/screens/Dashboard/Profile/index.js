@@ -6,15 +6,19 @@ import GlobalContext from '../../../Contexts/Context';
 import Api from '../../../service/Api';
 
 export default ({ navigation }) => {
-  const { signout } = useContext(GlobalContext);
+  const { authentication, signout } = useContext(GlobalContext);
   const [profile, setProfile] = useState('');
   const [user, setUser] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
+  if (!authentication) {
+    signout();
+  }
+
   useEffect(() => {
     getProfile();
     getUser();
-  }, [])
+  }, [authentication])
 
   const getProfile = async () => {
     let res = await Api.getProfile();
@@ -24,7 +28,6 @@ export default ({ navigation }) => {
       ));
       setIsLoading(false)
     } else {
-      console.warn('Ops! Estamos com problema para acessar suas informação. Pro Favor Tente mais tarde', `Error ${res.status}`)
       signout();
     }
   }

@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, ScrollView, Text, View, Image, TouchableOpacity } from 'react-native';
-import types from '../model/data/serviceData';
+import types from '../model/data/categoryData';
 
-const ServicesTypes = ({ data, onPress = null }) => {
+const CategoryTypes = ({ data, onPress = null }) => {
   return (
-    <View style={{ marginRight: 10, marginBottom: 10 }}>
+    <View style={{ marginRight: 10 }}>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {types.map((item, index) => (
           <TouchableOpacity
@@ -18,11 +18,12 @@ const ServicesTypes = ({ data, onPress = null }) => {
               marginTop: 20,
               marginLeft: 10,
               borderRadius: 10,
+              marginBottom: 20,
             }}
             key={index}
           >
-            <Image source={item.image} style={{ width: 50, height: 50, marginBottom: 10, justifyContent: 'center', alignItems: 'center' }} />
-            <Text style={{ justifyContent: 'center', alignItems: 'center' }}> {item.title} </Text>
+            <Image source={item.image} style={{ width: 50, height: 50, marginBottom: 10 }} />
+            <Text style={{ textAlign: 'center', flexWrap: 'wrap', }}> {item.title} </Text>
           </TouchableOpacity>
         ))}
       </ScrollView>
@@ -30,6 +31,6 @@ const ServicesTypes = ({ data, onPress = null }) => {
   )
 }
 
-export default ServicesTypes
+export default CategoryTypes
 
 const styles = StyleSheet.create({})

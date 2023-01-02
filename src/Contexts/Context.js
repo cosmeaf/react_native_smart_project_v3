@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, useReducer } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Api from '../service/Api';
+import { Alert } from "react-native";
 
 const GlobalContext = createContext({});
 
@@ -33,10 +34,14 @@ export const GlobalProvider = ({ children }) => {
   // Sign-Up
   const signup = async (username, email, password, password2) => {
     let json = await Api.signUp(username, email, password, password2)
-    if (json) {
+
+    if (json.id) {
       setAuthentication(false)
+      return true;
     } else {
       setAuthentication(false)
+      Alert.alert('Ops!', `${json.data.username} ou ${json.data.email}`)
+      return false;
     }
   }
 
