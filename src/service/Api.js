@@ -1,8 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const BASE_API = 'http://10.0.0.162/api'
+//const BASE_API = 'http://10.0.0.162/api'
 // const BASE_API = 'http://127.0.0.1/api'
-//const BASE_API = 'http://smartmecanico.duckdns.org:8002/api/v1'
+const BASE_API = 'http://smartmecanico.duckdns.org:8001/api'
 
 
 // Authentication
