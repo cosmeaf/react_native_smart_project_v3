@@ -1,5 +1,17 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, Text, View, StatusBar, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Alert, } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  StatusBar,
+  TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Alert,
+  ActivityIndicator,
+  Platform,
+} from 'react-native';
 // expo install expo-linear-gradient (For Expo Users)
 // Alternate: npm i react-native-linear-gradient (For non-expo users)
 import { LinearGradient } from 'expo-linear-gradient';
@@ -28,18 +40,35 @@ export default () => {
 
   function Login() {
     const { signin } = useContext(GlobalContext);
-    const [username, setUsername] = useState('demo');
+    const [username, setUsername] = useState('fulano');
     const [password, setPassword] = useState('qweasd32');
     const [showLoginPassword, setShowLoginPassword] = useState(false);
+    const [isloading, setIsLoading] = useState(false);
+
+    const startLoading = () => {
+      setIsLoading(true);
+      setTimeout(() => {
+        signin(username, password);
+        setActiveTab('Login');
+        setIsLoading(false);
+      }, 1000);
+    };
 
     const hundleSignIn = (username, password) => {
       if (username == '' && password == '') {
         alert('Campos não podem ser vazios')
       } else {
-        signin(username, password);
+        startLoading();
       }
     }
 
+    if (isloading) {
+      return (
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#54Af89' }}>
+          <ActivityIndicator size='large' color="#FFF" />
+        </View>
+      )
+    }
     return (
       <View style={{ marginTop: 10 }}>
         <View style={styles.inputView}>
@@ -56,8 +85,8 @@ export default () => {
             placeholderTextColor='#f1f2f6'
             keyboardType='default'
             textContentType='name'
-            autoCapitalize={false}
-            autoCompleteType='name'
+            autoCapitalize='none'
+            autoComplete={Platform.OS === 'web' ? 'none' : 'off'}
             returnKeyType='next'
             value={username}
             onChangeText={text => setUsername(text)}
@@ -71,6 +100,8 @@ export default () => {
             placeholderTextColor='#f1f2f6'
             secureTextEntry={!showLoginPassword}
             textContentType='password'
+            autoCapitalize='none'
+            autoComplete={Platform.OS === 'web' ? 'none' : 'off'}
             returnKeyType='done'
             value={password}
             onChangeText={text => setPassword(text)}
@@ -87,27 +118,39 @@ export default () => {
         </TouchableOpacity>
         <View style={styles.socialLoginView}>
           <TouchableOpacity style={styles.socialLoginTouchable}>
-            <Icon name='google' type='font-awesome' color='#F16529' />
+            <Icon name='google' type='font-awesome' color='#60d3A4' />
           </TouchableOpacity>
           <TouchableOpacity style={styles.socialLoginTouchable}>
-            <Icon name='facebook' type='font-awesome' color='#F16529' />
+            <Icon name='facebook' type='font-awesome' color='#60d3A4' />
           </TouchableOpacity>
           <TouchableOpacity style={styles.socialLoginTouchable}>
-            <Icon name='apple' type='font-awesome' color='#F16529' />
+            <Icon name='apple' type='font-awesome' color='#60d3A4' />
           </TouchableOpacity>
         </View>
       </View>
     );
+
+
   }
 
   function Register() {
     const { signup } = useContext(GlobalContext);
     const [showRegisterPassword, setShowRegisterPassword] = useState(false);
     const [showRegisterPassword2, setShowRegisterPassword2] = useState(false);
-    const [username, setUsername] = useState('demo');
-    const [email, setEmail] = useState('demo@gmail.com');
+    const [username, setUsername] = useState('fulano');
+    const [email, setEmail] = useState('fulano@gmail.com');
     const [password, setPassword] = useState('qweasd32');
     const [password2, setPassword2] = useState('qweasd32');
+    const [isloading, setIsLoading] = useState(false);
+
+    const startLoading = () => {
+      setIsLoading(true);
+      setTimeout(() => {
+        signup(username, email, password, password2)
+        setActiveTab('Login')
+        setIsLoading(false);
+      }, 800);
+    };
 
     const handleSignUp = (username, email, password, password2) => {
       if (username == '' && email == '' && password == '' && password2 == '') {
@@ -119,9 +162,16 @@ export default () => {
       if (password != password2) {
         Alert.alert('Error', 'Ops! Acho que a senha que digitou não são iguais... Verifique se digitou algo errado e tente novamente!')
       }
-      signup(username, email, password, password2)
+      startLoading();
     }
 
+    if (isloading) {
+      return (
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#54Af89' }}>
+          <ActivityIndicator size='large' color="#FFF" />
+        </View>
+      );
+    }
     return (
       <View style={{ marginTop: 10 }}>
         <View style={styles.inputView}>
@@ -134,10 +184,12 @@ export default () => {
           />
           <TextInput
             style={styles.input}
+            autoComplete={Platform.OS === 'web' ? 'none' : 'off'}
             placeholder='Nome'
             placeholderTextColor='#f1f2f6'
             textContentType='name'
             autoCompleteType='name'
+            autoCapitalize='none'
             returnKeyType='next'
             value={username}
             onChangeText={text => setUsername(text)}
@@ -153,11 +205,12 @@ export default () => {
           />
           <TextInput
             style={styles.input}
+            autoComplete={Platform.OS === 'web' ? 'none' : 'off'}
             placeholder='E-mail'
             placeholderTextColor='#f1f2f6'
             keyboardType='email-address'
             textContentType='emailAddress'
-            autoCapitalize={false}
+            autoCapitalize='none'
             autoCompleteType='email'
             returnKeyType='next'
             value={email}
@@ -174,6 +227,7 @@ export default () => {
           />
           <TextInput
             style={styles.input}
+            autoComplete={Platform.OS === 'web' ? 'none' : 'off'}
             placeholder='Senha'
             placeholderTextColor='#f1f2f6'
             secureTextEntry={!showRegisterPassword}
@@ -202,6 +256,7 @@ export default () => {
         <View style={styles.inputView}>
           <Icon
             style={{ paddingHorizontal: 4, width: 30 }}
+            autoComplete={Platform.OS === 'web' ? 'none' : 'off'}
             name='key'
             type='font-awesome-5'
             color='#fff'
@@ -255,13 +310,13 @@ export default () => {
             <TouchableOpacity
               style={[styles.socialLoginTouchable, { marginLeft: 0 }]}
             >
-              <Icon name='google' type='font-awesome' color='#F16529' />
+              <Icon name='google' type='font-awesome' color='#60d3A4' />
             </TouchableOpacity>
             <TouchableOpacity style={styles.socialLoginTouchable}>
-              <Icon name='facebook' type='font-awesome' color='#F16529' />
+              <Icon name='facebook' type='font-awesome' color='#60d3A4' />
             </TouchableOpacity>
             <TouchableOpacity style={styles.socialLoginTouchable}>
-              <Icon name='apple' type='font-awesome' color='#F16529' />
+              <Icon name='apple' type='font-awesome' color='#60d3A4' />
             </TouchableOpacity>
           </View>
         </View>
@@ -272,7 +327,7 @@ export default () => {
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <LinearGradient colors={['#E44D26', '#F16529']} style={styles.container}>
+      <LinearGradient colors={['#54Af89', '#60d3A4']} style={styles.container}>
         <Text style={styles.welcomeText}>
           {activeTab === 'Login' ? 'Bem Vindo' : 'Registrar Agora'}
         </Text>

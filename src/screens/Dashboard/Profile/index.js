@@ -6,13 +6,19 @@ import GlobalContext from '../../../Contexts/Context';
 import Api from '../../../service/Api';
 
 export default ({ navigation }) => {
-  const { signout } = useContext(GlobalContext);
+  const { authentication, signout } = useContext(GlobalContext);
   const [profile, setProfile] = useState('');
+  const [user, setUser] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
+  if (!authentication) {
+    signout();
+  }
+
   useEffect(() => {
-    getProfile()
-  }, [])
+    getProfile();
+    getUser();
+  }, [authentication])
 
   const getProfile = async () => {
     let res = await Api.getProfile();
@@ -21,9 +27,21 @@ export default ({ navigation }) => {
         setProfile(item)
       ));
       setIsLoading(false)
-      console.log(profile)
     } else {
-      //console.warn('Ops! Estamos com problema para acessar suas informação. Pro Favor Tente mais tarde', `Error ${res.status}`)
+      signout();
+    }
+  }
+
+  const getUser = async () => {
+    let res = await Api.getUser();
+    if (res.ok != false) {
+      res.map((item, key) => (
+        setUser(item)
+      ));
+      setIsLoading(false)
+    } else {
+      console.warn('Ops! Estamos com problema para acessar suas informação. Pro Favor Tente mais tarde', `Error ${res.status}`)
+      signout();
     }
   }
 
@@ -33,13 +51,13 @@ export default ({ navigation }) => {
         {
           profile.image
             ?
-            <Image source={{ uri: profile.image }} resizeMode='cover' style={{ width: 100, height: 100, overflow: 'hidden' }} />
+            <Image source={{ uri: profile.image }} resizeMode='cover' style={{ width: 100, height: 100, overflow: 'hidden', borderRadius: 50 }} />
             :
             <View style={{ backgroundColor: '#38A', width: 100, height: 100, borderRadius: 50 }}></View>
         }
       </View>
-      <Text style={{ textAlign: 'center', fontSize: 22, marginTop: 20, marginBottom: 20 }}> Meu Perfil </Text>
-
+      <Text style={{ textAlign: 'center', fontSize: 22, marginTop: 20 }}> {user.first_name} {user.last_name} </Text>
+      <Text style={{ textAlign: 'center', fontSize: 14, marginBottom: 20, color: '#CCC' }}> {user.email} </Text>
       <View style={{ marginStart: 10, marginEnd: 10 }}>
         {/* Acocunt Information */}
         <TouchableOpacity
@@ -59,7 +77,7 @@ export default ({ navigation }) => {
           onPress={() => navigation.navigate('User')}
         >
           <Ionicons name='person-circle-outline' color='#252525' size={30} />
-          <Text> Detalhe de Conta</Text>
+          <Text style={{ fontSize: 18 }}>  Conta</Text>
           <Ionicons name='chevron-forward' color='#252525' size={20} />
         </TouchableOpacity>
         {/* Address Informations */}
@@ -80,7 +98,7 @@ export default ({ navigation }) => {
           onPress={() => navigation.navigate('Address')}
         >
           <Ionicons name='business-outline' color='#252525' size={30} />
-          <Text> Informeções de Endereço</Text>
+          <Text style={{ fontSize: 18 }}> Endereço</Text>
           <Ionicons name='chevron-forward' color='#252525' size={20} />
         </TouchableOpacity>
         {/* Vehicle Informations */}
@@ -101,7 +119,7 @@ export default ({ navigation }) => {
           onPress={() => navigation.navigate('Vehicle')}
         >
           <Ionicons name='car-sport-outline' color='#252525' size={30} />
-          <Text> Informeções de Veículos</Text>
+          <Text style={{ fontSize: 18 }}> Veículos</Text>
           <Ionicons name='chevron-forward' color='#252525' size={20} />
         </TouchableOpacity>
         {/* System Config */}
@@ -122,9 +140,30 @@ export default ({ navigation }) => {
           onPress={() => navigation.navigate('Settings')}
         >
           <Ionicons name='settings-outline' color='#252525' size={30} />
-          <Text> Configurações </Text>
+          <Text style={{ fontSize: 18 }}> Ajustes </Text>
           <Ionicons name='chevron-forward' color='#252525' size={20} />
         </TouchableOpacity>
+        {/* System Config */}
+        {/* <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            width: '100%',
+            backgroundColor: '#F1F1F1',
+            alignItems: 'center',
+            paddingLeft: 10,
+            paddingRight: 10,
+            paddingBottom: 5,
+            paddingTop: 4,
+            marginBottom: 10,
+            borderRadius: 10
+          }}
+          onPress={() => navigation.navigate('TabOneScreen')}
+        >
+          <Ionicons name='cog' color='#252525' size={30} />
+          <Text style={{ fontSize: 18 }}> Componentes </Text>
+          <Ionicons name='chevron-forward' color='#252525' size={20} />
+        </TouchableOpacity> */}
       </View>
       {/* SIGN-OUT OF SYSTEM */}
       <View style={{ marginStart: 10, marginEnd: 10, marginTop: 80 }}>

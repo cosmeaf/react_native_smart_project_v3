@@ -6,33 +6,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 10,
-    margin: 10,
-  },
-  headerMenu: {
-    alignItems: 'center',
-  },
-  headerText: {
-    alignItems: 'center',
-    fontSize: 16,
-  },
-  headerProfile: {
-    alignItems: 'center',
-  },
-  headerImage: {
-    width: 35,
-    height: 35
-  },
   // Add Addvehicle
   dropdown: {
-    height: 50,
-    borderColor: '#FFF',
+    height: 40,
+    borderColor: '#000',
     borderWidth: 0.5,
-    borderRadius: 8,
     paddingHorizontal: 8,
     marginBottom: 10,
   },
@@ -47,27 +25,31 @@ const styles = StyleSheet.create({
     zIndex: 999,
     paddingHorizontal: 8,
     fontSize: 14,
-    color: '#FFF'
   },
   placeholderStyle: {
     fontSize: 16,
-    color: '#FFF'
   },
   selectedTextStyle: {
     fontSize: 16,
-    color: '#FFF'
   },
   iconStyle: {
     width: 20,
     height: 20,
-    color: '#FFF'
   },
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
-    color: '#38A69D'
+    color: '#000',
+    backgroundColor: '#DDD'
   },
-  button: { backgroundColor: '#FFF', marginTop: 10, justifyContent: 'center', alignItems: 'center', padding: 10, borderRadius: 8 },
-  buttonText: { fontSize: 18, fontWeight: 'bold', color: '#38A69D' }
+  button: { marginRight: 10, marginLeft: 10, marginTop: 10, marginBottom: 20, justifyContent: 'center', alignItems: 'center', padding: 10, borderRadius: 10, borderWidth: 0.5 },
+  buttonText: { fontSize: 18, fontWeight: 'bold', color: '#212121' },
+  modal: { justifyContent: 'center', alignItems: 'center' },
+  modalContainer: { justifyContent: 'center', padding: 10, backgroundColor: '#FFF', height: 180, width: '94%', borderRadius: 10 },
+  modaTextInput: { height: 40, borderColor: 'gray', borderWidth: 1, paddingLeft: 14, fontSize: 16, backgroundColor: '#F2F2F2' },
+  modalButton: { width: 100, justifyContent: 'center', alignItems: 'center', backgroundColor: '#F16529', padding: 5, borderRadius: 10 },
+  modalButtonText: { fontSize: 18, color: '#FFF' },
+  excludeButton: { justifyContent: 'center', alignItems: 'center', marginBottom: 10 },
+  excludeButtonText: { fontSize: 18, fontWeight: '500', color: 'red' },
 });
 export default styles;

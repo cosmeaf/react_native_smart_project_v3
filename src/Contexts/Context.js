@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, useReducer } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Api from '../service/Api';
+import { Alert } from "react-native";
 
 const GlobalContext = createContext({});
 
@@ -8,9 +9,11 @@ export const GlobalProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [authentication, setAuthentication] = useState(false);
   const [accessToken, setAccessToken] = useState('');
+  const [profile, setProfile] = useState([]);
+  const [user, setUser] = useState([]);
 
   useEffect(() => {
-    tokenVerify()
+    tokenVerify();
   }, []);
 
   // Sign-In
@@ -31,23 +34,24 @@ export const GlobalProvider = ({ children }) => {
   // Sign-Up
   const signup = async (username, email, password, password2) => {
     let json = await Api.signUp(username, email, password, password2)
-    if (json) {
+
+    if (json.id) {
       setAuthentication(false)
+      return true;
     } else {
       setAuthentication(false)
+      Alert.alert('Ops!', `${json.data.username} ou ${json.data.email}`)
+      return false;
     }
   }
 
-  /**
-   * Sign-Out
-   */
+  //Sign-Out
   const signout = () => {
     AsyncStorage.removeItem("accessToken");
     AsyncStorage.clear();
     setIsLoading(false)
     setAuthentication(false);
   }
-
 
   // Data Persiste, Validation Token and Refresh new Token 
   const tokenVerify = async (token_verify, token_refresh) => {
@@ -76,8 +80,10 @@ export const GlobalProvider = ({ children }) => {
   }
 
 
+
+
   return (
-    <GlobalContext.Provider value={{ authentication, isLoading, signin, signup, signout }}>
+    <GlobalContext.Provider value={{ authentication, isLoading, signin, signup, signout, tokenVerify }}>
       {children}
     </GlobalContext.Provider>
   )
